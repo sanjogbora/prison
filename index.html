@@ -37,24 +37,24 @@
         }
 
         /* --- Base, Container, Header, Actions --- */
-        html,
-        body {
+        html {
             height: 100%;
+            /* Allow scrolling on page level if needed */
+        }
+        body {
+            height: 100%; /* Try to fill viewport */
             margin: 0;
             padding: 0;
-            overflow: hidden;
-        }
-
-        body {
-            display: flex;
+            /* REMOVED: overflow: hidden; */
+            display: flex; /* Use flex to center container */
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Align container to top */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* --- CHANGE: Set background to white --- */
             background-color: var(--text-light);
             color: var(--text-dark);
             box-sizing: border-box;
             font-size: 15px;
+            overflow-x: hidden; /* Prevent accidental horizontal scrollbars */
         }
 
         .container {
@@ -62,15 +62,14 @@
             flex-direction: column;
             width: 100%;
             max-width: 1800px;
-            /* Adjusted max-width slightly */
-            height: 100%;
+            height: 100%; /* Fill body height */
             margin: 0 auto;
             background-color: var(--text-light);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow-md);
             padding: 15px;
             box-sizing: border-box;
-            overflow: hidden;
+            /* REMOVED: overflow: hidden; Allow internal scrolling */
         }
 
         .header {
@@ -80,13 +79,21 @@
             margin-bottom: 10px;
             padding-bottom: 10px;
             border-bottom: 1px solid var(--grey-lighter);
-            flex-shrink: 0;
+            flex-shrink: 0; /* Prevent header from shrinking */
+            flex-wrap: wrap; /* Allow header content to wrap */
+            gap: 10px; /* Add gap for wrapped items */
         }
 
         .header h1 {
             margin: 0;
             font-size: 1.6rem;
             color: var(--primary-dark);
+        }
+
+        .actions {
+            display: flex; /* Ensure actions are in a row */
+            flex-wrap: wrap; /* Allow buttons to wrap */
+            gap: 8px; /* Space between buttons */
         }
 
         .actions button {
@@ -96,7 +103,7 @@
             border: none;
             border-radius: var(--border-radius);
             cursor: pointer;
-            margin-left: 8px;
+            /* REMOVED: margin-left: 8px; Use gap instead */
             font-size: 0.85rem;
             transition: background-color 0.2s ease;
         }
@@ -115,22 +122,20 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            /* Changed to flex-start */
             padding: 10px 0;
             margin-bottom: 10px;
             gap: 20px;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Allow control groups to wrap */
             border-bottom: 1px solid var(--grey-lighter);
-            flex-shrink: 0;
+            flex-shrink: 0; /* Prevent controls from shrinking */
         }
 
         .control-group {
             display: flex;
             flex-direction: column;
             gap: 5px;
-            min-width: 160px;
-            flex: 1;
-            /* Allow groups to grow */
+            min-width: 160px; /* Maintain minimum width for readability */
+            flex: 1 1 160px; /* Allow grow, shrink, with base width */
         }
 
         .control-group label,
@@ -159,7 +164,6 @@
             cursor: pointer;
             transition: background-color 0.2s ease;
             margin-top: 5px;
-            /* Keep margin for button spacing */
         }
 
         .filter-container button:hover {
@@ -179,6 +183,7 @@
             padding: 0;
             margin: 0;
             display: flex;
+            flex-wrap: wrap; /* Allow radios to wrap */
             gap: 15px;
             margin-top: 5px;
         }
@@ -241,11 +246,9 @@
         .kpi-container {
             display: flex;
             justify-content: space-around;
-            /* Use space-around */
             margin-bottom: 15px;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Allow KPIs to wrap */
             gap: 10px;
-            /* Adjusted gap */
             flex-shrink: 0;
         }
 
@@ -253,15 +256,13 @@
             background-color: var(--text-light);
             border-radius: var(--border-radius);
             padding: 12px;
-            min-width: 110px;
-            flex: 1;
-            /* Let cards grow */
+            min-width: 110px; /* Minimum width for readability */
+            flex: 1 1 110px; /* Allow grow/shrink, base width */
             box-shadow: var(--shadow-sm);
             text-align: center;
             border: 1px solid var(--grey-lighter);
             transition: all 0.2s;
             max-width: 180px;
-            /* Add max-width if needed */
         }
 
         .kpi-card:hover {
@@ -287,65 +288,51 @@
         .dashboard {
             display: flex;
             gap: 15px;
-            flex: 1;
-            /* Fill container height */
-            min-height: 0;
-            /* Crucial for flex children growth */
-            overflow: hidden;
-            /* Prevent layout issues */
+            flex: 1; /* Fill remaining vertical space in container */
+            min-height: 0; /* CRUCIAL for flex children growth */
+            overflow: hidden; /* Hide potential overflow *within* dashboard area */
         }
 
         .visualization {
-            flex: 1;
-            /* Grow to fill available horizontal space */
+            flex: 1; /* Grow to fill available horizontal space */
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow: hidden; /* Content inside visualization (treemap) shouldn't overflow */
             position: relative;
             background-color: var(--grey-lightest);
-            /* Keep viz area slightly distinct */
             border-radius: var(--border-radius);
-            min-height: 0;
-            /* Crucial for treemap container */
+            min-height: 0; /* Crucial for internal flex/treemap sizing */
             border: 1px solid var(--grey-lighter);
-            /* Removed flex-grow/shrink/basis, flex: 1 covers it */
         }
 
         .details-panel {
-            flex-basis: 380px;
-            /* Initial width */
-            flex-shrink: 0;
-            /* Don't shrink */
+            flex-basis: 380px; /* Initial width */
+            flex-shrink: 0; /* Don't shrink initially */
+            flex-grow: 0; /* Don't grow initially */
             padding: 20px;
             background-color: var(--text-light);
             border-radius: var(--border-radius);
             border: 1px solid var(--grey-lighter);
-            overflow-y: auto;
+            overflow-y: auto; /* Allow vertical scrolling within details panel */
             box-shadow: var(--shadow-sm);
-            flex-grow: 0;
-            /* Don't grow beyond basis */
-            max-width: 450px;
-            /* Limit max width */
+            max-width: 450px; /* Limit max width */
+            min-height: 0; /* Help with flex sizing */
         }
 
         .treemap-container {
-            flex: 1;
-            /* Fill the visualization area */
+            flex: 1; /* Fill the visualization area vertically */
             position: relative;
             width: 100%;
-            height: 100%;
-            /* Ensure height is also 100% */
-            overflow: hidden;
+            height: 100%; /* Fill visualization height */
+            overflow: hidden; /* Treemap itself should not overflow */
             border-radius: var(--border-radius);
             padding: 0;
-            /* No padding on the container itself */
         }
 
-        /* --- Node Styles --- */
+        /* --- Node Styles (Unchanged) --- */
         .node {
             position: absolute;
-            overflow: hidden;
-            /* Keep text from spilling out */
+            overflow: hidden; /* Keep text from spilling out */
             border: 1px solid rgba(255, 255, 255, 0.7);
             box-sizing: border-box;
             border-radius: 3px;
@@ -353,821 +340,127 @@
             cursor: pointer;
             box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05), var(--shadow-sm);
         }
+        .node:hover { box-shadow: 0 0 0 2px var(--primary-light), var(--shadow-md); z-index: 10; }
+        .node.selected { box-shadow: 0 0 0 3px var(--primary-main), var(--shadow-md); border-color: var(--primary-main); z-index: 20; }
+        .node.filtered-out { opacity: 0.15; pointer-events: none; transform: scale(0.98); box-shadow: none; z-index: 1; }
+        .node.search-match { box-shadow: 0 0 0 3px var(--status-green), var(--shadow-md); border-color: var(--status-green); z-index: 15; opacity: 1 !important; pointer-events: auto !important; transform: scale(1) !important; }
+        .node.selected.filtered-out:not(.search-match) { opacity: 0.5; pointer-events: auto; box-shadow: 0 0 0 3px var(--primary-main), var(--shadow-md); z-index: 19; }
 
-        .node:hover {
-            box-shadow: 0 0 0 2px var(--primary-light), var(--shadow-md);
-            z-index: 10;
-            /* Bring to front on hover */
-        }
-
-        .node.selected {
-            box-shadow: 0 0 0 3px var(--primary-main), var(--shadow-md);
-            border-color: var(--primary-main);
-            z-index: 20;
-            /* Ensure selected is on top */
-        }
-
-        /* Combined filtering and searching styles */
-        .node.filtered-out {
-            opacity: 0.15;
-            /* Dim significantly */
-            pointer-events: none;
-            /* Non-interactive */
-            transform: scale(0.98);
-            /* Optional subtle shrink */
-            box-shadow: none;
-            /* Remove shadows */
-            z-index: 1;
-            /* Send to back */
-        }
-
-        .node.search-match {
-            /* Highlight search matches clearly */
-            box-shadow: 0 0 0 3px var(--status-green), var(--shadow-md);
-            border-color: var(--status-green);
-            z-index: 15;
-            /* Above normal, below selected */
-            opacity: 1 !important;
-            /* IMPORTANT: Override filtered-out opacity */
-            pointer-events: auto !important;
-            /* IMPORTANT: Ensure searchable nodes are interactive */
-            transform: scale(1) !important;
-            /* IMPORTANT: Override filtered-out transform */
-        }
-
-        /* Allow selected node to be slightly visible even if technically filtered out by dropdowns */
-        .node.selected.filtered-out:not(.search-match) {
-            opacity: 0.5;
-            pointer-events: auto;
-            /* Keep selection shadow but dimmed */
-            box-shadow: 0 0 0 3px var(--primary-main), var(--shadow-md);
-            z-index: 19;
-            /* Below selected but above search-match */
-        }
-
-
-        /* --- Node Content (IMPROVED TEXT SIZES) --- */
+        /* --- Node Content (Unchanged) --- */
         .node-content {
-            padding: 5px 8px;
-            /* Reduced padding slightly to fit more */
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-            text-align: left;
-            color: var(--text-light);
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
-            box-sizing: border-box;
-            overflow: hidden;
-            /* --- CHANGE: Prevent text selection on double click --- */
-            user-select: none;
-            pointer-events: none;
-            /* Keep this: ensures click goes to parent .node */
-            /* --- CHANGE: Set base font size for em units --- */
-            font-size: 13px;
-            /* Slightly smaller base for dense views */
-        }
-
-        .node-title {
-            font-weight: 600;
-            margin-bottom: 3px;
-            /* Reduced space */
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            width: 100%;
-            /* --- CHANGE: Use em for relative sizing, slightly larger base --- */
-            font-size: 0.9em;
-            /* Adjusted for base 13px -> ~11.7px */
-            line-height: 1.2;
-            display: block;
-            /* Ensure it takes block space */
-        }
-
-        /* --- ADDED: Style for the prominent value (occupancy/capacity) --- */
-        .node-value {
-            font-weight: 700;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            width: 100%;
-            /* --- CHANGE: Significantly larger font size --- */
-            font-size: 1.3em;
-            /* Adjusted for base 13px -> ~16.9px */
-            line-height: 1.1;
-            margin-top: 1px;
-            /* Reduced space */
-            color: rgba(255, 255, 255, 0.95);
-            /* Very bright */
-            display: block;
-            /* Ensure it takes space */
-        }
-
-
-        /* --- Tooltip, Details Panel, Alerts, Loading, Modals, Context Menu, Management Panel --- */
-        /* (Keep the enhanced styles from the previous version for these sections) */
-        .tooltip {
-            position: absolute;
-            padding: 0;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-            font-size: 12px;
-            line-height: 1.4;
-            pointer-events: none;
-            z-index: 1000;
-            max-width: 320px;
-            background-color: rgba(0, 0, 0, 0.85);
-            color: white;
-        }
-
-        .tooltip-header {
-            background-color: var(--grey-dark);
-            color: var(--text-light);
-            padding: 8px 12px;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .tooltip-body {
-            padding: 10px 12px;
-            background-color: var(--text-light);
-            color: var(--text-dark);
-        }
-
-        .tooltip-section {
-            margin-bottom: 8px;
-        }
-
-        .tooltip-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .tooltip-section div {
-            margin-bottom: 2px;
-        }
-
-        .tooltip-alert,
-        .tooltip-info,
-        .tooltip-warning {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 3px;
-            margin-left: 5px;
-            font-size: 10px;
-            font-weight: 500;
-        }
-
-        .tooltip-alert {
-            background-color: var(--status-red);
-            color: var(--text-light);
-        }
-
-        .tooltip-info {
-            background-color: var(--status-blue);
-            color: var(--text-light);
-        }
-
-        .tooltip-warning {
-            background-color: var(--status-orange);
-            color: var(--text-light);
-        }
-
-        .tooltip-actions {
-            margin: 5px 0 0 0;
-            padding-left: 18px;
-            font-size: 11px;
-            list-style-type: disc;
-        }
-
-        .tooltip-actions li {
-            margin-bottom: 3px;
-        }
-
-        .tooltip-footer {
-            background-color: var(--grey-lightest);
-            border-top: 1px solid var(--grey-lighter);
-            padding: 6px 12px;
-        }
-
-        .tooltip-hint {
-            color: var(--text-muted);
-            font-size: 10px;
-            font-style: italic;
-        }
-
-        .details-panel h3 {
-            color: var(--primary-dark);
-            font-size: 1.3rem;
-            border-bottom: 1px solid var(--grey-lighter);
-            padding-bottom: 8px;
-            margin-bottom: 15px;
-        }
-
-        .details-panel h3 .detail-status-pill {
-            font-size: 0.7rem;
-            padding: 4px 10px;
-            border-radius: 12px;
-        }
-
-        .details-panel p.detail-placeholder {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        .detail-item {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--grey-lighter);
-        }
-
-        .detail-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .detail-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--grey-dark);
-            font-size: 1rem;
-        }
-
-        .detail-info {
-            font-size: 0.9rem;
-            margin-bottom: 6px;
-            color: var(--text-dark);
-            line-height: 1.5;
-        }
-
-        .detail-info strong {
-            color: var(--grey-dark);
-            margin-right: 5px;
-            font-weight: 600;
-        }
-
-        .detail-subtitle {
-            color: var(--primary-main);
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            margin-top: 20px;
-            /* Increased top margin for separation */
-        }
-
-        .aggregated-list {
-            margin-top: 10px;
-            max-height: 200px;
-            /* Adjusted max height for child/inmate lists */
-            overflow-y: auto;
-            border: 1px solid var(--grey-lighter);
-            border-radius: var(--border-radius);
-            background-color: var(--grey-lightest);
-        }
-
-        /* Specific max-height for the children list */
-        .children-list {
-            max-height: 180px;
-            /* Slightly smaller */
-        }
-
-
-        .list-item {
-            display: flex;
-            align-items: center;
-            padding: 8px 10px;
-            border-bottom: 1px solid var(--grey-lighter);
-            transition: background-color 0.15s ease;
-            /* Add hover transition */
-        }
-
-        /* Add cursor pointer to child list items */
-        .child-list-item {
-            cursor: default;
-            /* Default cursor, actions are explicit */
-        }
-
-        .child-list-item:hover {
-            background-color: var(--primary-lightest);
-            /* Hover effect */
-        }
-
-
-        .list-item:last-child {
-            border-bottom: none;
-        }
-
-        /* Removed general hover from .list-item:hover to avoid conflict */
-        /* .list-item:hover { background-color: var(--primary-lightest); } */
-
-        .item-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            margin-right: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            font-weight: 600;
-            flex-shrink: 0;
-            text-transform: uppercase;
-            background-color: var(--grey-light);
-            color: var(--text-dark);
-        }
-
-        .item-info {
-            flex: 1;
-            line-height: 1.4;
-            overflow: hidden;
-            /* Prevent long names breaking layout */
-            min-width: 0;
-            /* For flex truncation */
-        }
-
-        .item-name {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-dark);
-            margin-bottom: 3px;
-            display: flex;
-            /* To align pill correctly */
-            align-items: center;
-            flex-wrap: wrap;
-            /* Allow pill to wrap */
-            gap: 6px;
-        }
-
-
-        .item-id,
-        .item-detail {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .item-location {
-            font-size: 0.75rem;
-            color: var(--primary-main);
-            font-style: italic;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .item-actions {
-            margin-left: auto;
-            /* Changed from margin-left: auto; */
-            padding-left: 10px;
-            /* Add some space */
-            display: flex;
-            gap: 8px;
-            flex-shrink: 0;
-            /* Prevent actions shrinking */
-            align-items: center;
-            /* Vertically center buttons */
-        }
-
-        .action-btn {
-            background: none;
-            border: none;
-            padding: 3px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: var(--grey-medium);
-            transition: color 0.2s;
-            line-height: 1;
-            /* Ensure consistent button height */
-        }
-
-        /* Specific style for explore button */
-        .explore-child-btn {
-            font-size: 1.1rem;
-            /* Slightly smaller if needed */
-        }
-
-
-        .action-btn:hover {
-            color: var(--primary-main);
-        }
-
-        .alert {
-            display: inline-block;
-            padding: 3px 8px;
-            font-size: 0.7rem;
-            border-radius: 10px;
-            /* margin-left: 6px; Removed default margin */
-            font-weight: 500;
-            vertical-align: middle;
-            border: 1px solid transparent;
-            line-height: 1.1;
-            white-space: nowrap;
-            /* Prevent wrapping inside pill */
-        }
-
-        .alert-danger {
-            background-color: var(--status-red);
-            color: var(--text-light);
-            border-color: var(--status-red);
-        }
-
-        .alert-warning {
-            background-color: var(--status-orange);
-            color: var(--text-light);
-            border-color: var(--status-orange);
-        }
-
-        .alert-info {
-            background-color: var(--status-blue);
-            color: var(--text-light);
-            border-color: var(--status-blue);
-        }
-
-        .alert-success {
-            background-color: var(--status-green);
-            color: var(--text-light);
-            border-color: var(--status-green);
-        }
-
-        .alert-secondary {
-            background-color: var(--grey-light);
-            color: var(--text-dark);
-            border-color: var(--grey-light);
-        }
-
-        .loading {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(238, 238, 238, 0.8);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            z-index: 50;
-            border-radius: 6px;
-        }
-
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border-left-color: var(--primary-main);
-            animation: spin 1s linear infinite;
-            margin-bottom: 10px;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        #reallocation-menu {
-            position: absolute;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            padding: 5px 0;
-            z-index: 1001;
-            font-size: 0.8rem;
-        }
-
-        .menu-header {
-            padding: 5px 10px;
-            font-weight: bold;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .menu-item {
-            padding: 6px 12px;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .menu-item:hover {
-            background-color: #f0f0f0;
-        }
-
-        .menu-item.separator {
-            border-top: 1px solid #eee;
-            margin-top: 5px;
-            padding-top: 5px;
-        }
-
-        #modal-backdrop,
-        #management-panel-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(47, 54, 64, 0.7);
-            z-index: 1050;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #reallocation-modal,
-        #reassignment-modal,
-        #management-panel {
-            background-color: var(--text-light);
-            border-radius: var(--border-radius);
-            max-width: 95%;
-            box-shadow: var(--shadow-md);
-            display: flex;
-            flex-direction: column;
-        }
-
-        #reallocation-modal,
-        #reassignment-modal {
-            width: 550px;
-            max-height: 85vh;
-        }
-
-        #management-panel {
-            width: 1000px;
-            height: 85vh;
-            max-height: 900px;
-            overflow: hidden;
-        }
-
-        .modal-header,
-        .panel-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--grey-lighter);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .modal-header h3,
-        .panel-header h3 {
-            margin: 0;
-            font-size: 1.3rem;
-            color: var(--primary-dark);
-        }
-
-        .modal-header button,
-        .panel-header button {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            line-height: 1;
-            padding: 0;
-            color: var(--grey-medium);
-        }
-
-        .modal-header button:hover,
-        .panel-header button:hover {
-            color: var(--text-dark);
-        }
-
-        .modal-body,
-        .panel-body {
-            padding: 20px;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-
-        .modal-footer {
-            padding: 15px 20px;
-            border-top: 1px solid var(--grey-lighter);
-            background-color: var(--grey-lightest);
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            flex-shrink: 0;
-        }
-
-        .modal-footer button {
-            padding: 10px 18px;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        #cancel-reallocation,
-        #cancel-reassignment {
-            background-color: var(--grey-lighter);
-            border: 1px solid var(--grey-light);
-            color: var(--text-dark);
-        }
-
-        #cancel-reallocation:hover,
-        #cancel-reassignment:hover {
-            background-color: var(--grey-light);
-        }
-
-        #confirm-reallocation,
-        #confirm-reassignment {
-            background-color: var(--primary-main);
-            color: var(--text-light);
-            border: none;
-        }
-
-        #confirm-reallocation:hover,
-        #confirm-reassignment:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .modal-body label {
-            color: var(--grey-dark);
-            font-weight: 600;
-            display: block;
-            margin-bottom: 5px;
-            font-size: 0.85rem;
-        }
-
-        .modal-body select,
-        .modal-body textarea,
-        .modal-body input[type="text"] {
-            border-color: var(--grey-light);
-            background-color: var(--text-light);
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid var(--grey-lighter);
-            /* Ensure border is consistent */
-            border-radius: var(--border-radius);
-            box-sizing: border-box;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            /* Add margin */
-        }
-
-        .modal-body textarea {
-            resize: vertical;
-        }
-
-        .inmate-info,
-        .personnel-info {
-            background-color: var(--grey-lightest);
-            border: 1px solid var(--grey-lighter);
-            color: var(--text-dark);
-            margin-bottom: 15px;
-            padding: 12px;
-            border-radius: var(--border-radius);
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .inmate-info div,
-        .personnel-info div {
-            margin-bottom: 4px;
-        }
-
-        .panel-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--grey-lighter);
-            flex-shrink: 0;
-            background-color: var(--grey-lightest);
-        }
-
-        .panel-tab {
-            padding: 14px 25px;
-            cursor: pointer;
-            font-size: 1rem;
-            color: var(--grey-medium);
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s ease;
-            font-weight: 500;
-        }
-
-        .panel-tab:hover {
-            background-color: var(--grey-lighter);
-            color: var(--primary-main);
-        }
-
-        .panel-tab.panel-tab-active {
-            border-color: var(--primary-main);
-            color: var(--primary-main);
-            background-color: var(--text-light);
-            font-weight: 600;
-        }
+            padding: 5px 8px; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; text-align: left; color: var(--text-light); text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6); box-sizing: border-box; overflow: hidden; user-select: none; pointer-events: none; font-size: 13px;
+        }
+        .node-title { font-weight: 600; margin-bottom: 3px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 100%; font-size: 0.9em; line-height: 1.2; display: block; }
+        .node-value { font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 100%; font-size: 1.3em; line-height: 1.1; margin-top: 1px; color: rgba(255, 255, 255, 0.95); display: block; }
+
+        /* --- Tooltip, Details Panel (Structure), Alerts, Loading, Modals, Context Menu, Management Panel --- */
+        /* (Keep the enhanced styles from the previous version - these are mostly unchanged structurally) */
+        .tooltip { position: absolute; padding: 0; border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow-md); font-size: 12px; line-height: 1.4; pointer-events: none; z-index: 1000; max-width: 320px; background-color: rgba(0, 0, 0, 0.85); color: white; }
+        .tooltip-header { background-color: var(--grey-dark); color: var(--text-light); padding: 8px 12px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+        .tooltip-body { padding: 10px 12px; background-color: var(--text-light); color: var(--text-dark); }
+        .tooltip-section { margin-bottom: 8px; }
+        .tooltip-section:last-child { margin-bottom: 0; }
+        .tooltip-section div { margin-bottom: 2px; }
+        .tooltip-alert, .tooltip-info, .tooltip-warning { display: inline-block; padding: 2px 6px; border-radius: 3px; margin-left: 5px; font-size: 10px; font-weight: 500; }
+        .tooltip-alert { background-color: var(--status-red); color: var(--text-light); }
+        .tooltip-info { background-color: var(--status-blue); color: var(--text-light); }
+        .tooltip-warning { background-color: var(--status-orange); color: var(--text-light); }
+        .tooltip-actions { margin: 5px 0 0 0; padding-left: 18px; font-size: 11px; list-style-type: disc; }
+        .tooltip-actions li { margin-bottom: 3px; }
+        .tooltip-footer { background-color: var(--grey-lightest); border-top: 1px solid var(--grey-lighter); padding: 6px 12px; }
+        .tooltip-hint { color: var(--text-muted); font-size: 10px; font-style: italic; }
+
+        /* --- Details Panel Content Styling (Mostly Unchanged) --- */
+        .details-panel h3 { color: var(--primary-dark); font-size: 1.3rem; border-bottom: 1px solid var(--grey-lighter); padding-bottom: 8px; margin-top: 0; /* Remove default h3 margin */ margin-bottom: 15px; }
+        .details-panel h3 .detail-status-pill { font-size: 0.7rem; padding: 4px 10px; border-radius: 12px; }
+        .details-panel p.detail-placeholder { color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-top: 40px; }
+        .detail-item { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--grey-lighter); }
+        .detail-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .detail-title { font-weight: 600; margin-bottom: 8px; color: var(--grey-dark); font-size: 1rem; }
+        .detail-info { font-size: 0.9rem; margin-bottom: 6px; color: var(--text-dark); line-height: 1.5; }
+        .detail-info strong { color: var(--grey-dark); margin-right: 5px; font-weight: 600; }
+        .detail-subtitle { color: var(--primary-main); font-size: 1rem; font-weight: 600; margin-bottom: 10px; margin-top: 20px; }
+        .aggregated-list { margin-top: 10px; max-height: 200px; overflow-y: auto; border: 1px solid var(--grey-lighter); border-radius: var(--border-radius); background-color: var(--grey-lightest); }
+        .children-list { max-height: 180px; } /* Slightly smaller for children list */
+        .list-item { display: flex; align-items: center; padding: 8px 10px; border-bottom: 1px solid var(--grey-lighter); transition: background-color 0.15s ease; }
+        .child-list-item { cursor: default; } /* Default cursor, actions are explicit */
+        .child-list-item:hover { background-color: var(--primary-lightest); } /* Hover effect */
+        .list-item:last-child { border-bottom: none; }
+        .item-icon { width: 36px; height: 36px; border-radius: 50%; margin-right: 12px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 600; flex-shrink: 0; text-transform: uppercase; background-color: var(--grey-light); color: var(--text-dark); }
+        .item-info { flex: 1; line-height: 1.4; overflow: hidden; min-width: 0; } /* For flex truncation */
+        .item-name { font-weight: 600; font-size: 0.9rem; color: var(--text-dark); margin-bottom: 3px; display: flex; align-items: center; flex-wrap: wrap; /* Allow pill to wrap */ gap: 6px; }
+        .item-id, .item-detail, .item-location { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-location { color: var(--primary-main); font-style: italic; }
+        .item-actions { padding-left: 10px; display: flex; gap: 8px; flex-shrink: 0; align-items: center; }
+        .action-btn { background: none; border: none; padding: 3px; cursor: pointer; font-size: 1.2rem; color: var(--grey-medium); transition: color 0.2s; line-height: 1; }
+        .explore-child-btn { font-size: 1.1rem; }
+        .action-btn:hover { color: var(--primary-main); }
+        .alert { display: inline-block; padding: 3px 8px; font-size: 0.7rem; border-radius: 10px; font-weight: 500; vertical-align: middle; border: 1px solid transparent; line-height: 1.1; white-space: nowrap; }
+        .alert-danger { background-color: var(--status-red); color: var(--text-light); border-color: var(--status-red); }
+        .alert-warning { background-color: var(--status-orange); color: var(--text-light); border-color: var(--status-orange); }
+        .alert-info { background-color: var(--status-blue); color: var(--text-light); border-color: var(--status-blue); }
+        .alert-success { background-color: var(--status-green); color: var(--text-light); border-color: var(--status-green); }
+        .alert-secondary { background-color: var(--grey-light); color: var(--text-dark); border-color: var(--grey-light); }
+
+        /* --- Loading Spinner (Unchanged) --- */
+        .loading { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(238, 238, 238, 0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #666; z-index: 50; border-radius: 6px; }
+        .spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: var(--primary-main); animation: spin 1s linear infinite; margin-bottom: 10px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* --- Context Menu (Unchanged) --- */
+        #reallocation-menu { position: absolute; background-color: white; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); padding: 5px 0; z-index: 1001; font-size: 0.8rem; }
+        .menu-header { padding: 5px 10px; font-weight: bold; border-bottom: 1px solid #eee; margin-bottom: 5px; color: #333; }
+        .menu-item { padding: 6px 12px; cursor: pointer; white-space: nowrap; }
+        .menu-item:hover { background-color: #f0f0f0; }
+        .menu-item.separator { border-top: 1px solid #eee; margin-top: 5px; padding-top: 5px; }
+
+        /* --- Modals & Panels (Mostly Unchanged Structure/Appearance) --- */
+        #modal-backdrop, #management-panel-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(47, 54, 64, 0.7); z-index: 1050; display: flex; align-items: center; justify-content: center; padding: 15px; /* Add padding for small screens */ box-sizing: border-box; }
+        #reallocation-modal, #reassignment-modal, #management-panel { background-color: var(--text-light); border-radius: var(--border-radius); max-width: 95%; box-shadow: var(--shadow-md); display: flex; flex-direction: column; margin: auto; /* Center within backdrop padding */ overflow: hidden; /* Prevent modal itself from overflowing */ }
+        #reallocation-modal, #reassignment-modal { width: 550px; max-height: 85vh; }
+        #management-panel { width: 1000px; height: 85vh; max-height: 900px; }
+        .modal-header, .panel-header { padding: 15px 20px; border-bottom: 1px solid var(--grey-lighter); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .modal-header h3, .panel-header h3 { margin: 0; font-size: 1.3rem; color: var(--primary-dark); }
+        .modal-header button, .panel-header button { background: none; border: none; font-size: 1.5rem; cursor: pointer; line-height: 1; padding: 0; color: var(--grey-medium); }
+        .modal-header button:hover, .panel-header button:hover { color: var(--text-dark); }
+        .modal-body, .panel-body { padding: 20px; flex-grow: 1; overflow-y: auto; /* Scroll content within body */ }
+        .modal-footer { padding: 15px 20px; border-top: 1px solid var(--grey-lighter); background-color: var(--grey-lightest); display: flex; justify-content: flex-end; gap: 10px; flex-shrink: 0; flex-wrap: wrap; /* Allow buttons to wrap */ }
+        .modal-footer button { padding: 10px 18px; border-radius: var(--border-radius); cursor: pointer; font-size: 0.9rem; font-weight: 600; }
+        #cancel-reallocation, #cancel-reassignment { background-color: var(--grey-lighter); border: 1px solid var(--grey-light); color: var(--text-dark); }
+        #cancel-reallocation:hover, #cancel-reassignment:hover { background-color: var(--grey-light); }
+        #confirm-reallocation, #confirm-reassignment { background-color: var(--primary-main); color: var(--text-light); border: none; }
+        #confirm-reallocation:hover, #confirm-reassignment:hover { background-color: var(--primary-dark); }
+        .modal-body label { color: var(--grey-dark); font-weight: 600; display: block; margin-bottom: 5px; font-size: 0.85rem; }
+        .modal-body select, .modal-body textarea, .modal-body input[type="text"] { border-color: var(--grey-light); background-color: var(--text-light); width: 100%; padding: 8px 12px; border: 1px solid var(--grey-lighter); border-radius: var(--border-radius); box-sizing: border-box; font-size: 0.9rem; margin-bottom: 15px; }
+        .modal-body textarea { resize: vertical; }
+        .inmate-info, .personnel-info { background-color: var(--grey-lightest); border: 1px solid var(--grey-lighter); color: var(--text-dark); margin-bottom: 15px; padding: 12px; border-radius: var(--border-radius); font-size: 0.9rem; line-height: 1.4; }
+        .inmate-info div, .personnel-info div { margin-bottom: 4px; }
+
+        /* --- Management Panel Specific (Tabs, Table) --- */
+        .panel-tabs { display: flex; border-bottom: 1px solid var(--grey-lighter); flex-shrink: 0; background-color: var(--grey-lightest); flex-wrap: wrap; /* Allow tabs to wrap */ }
+        .panel-tab { padding: 14px 25px; cursor: pointer; font-size: 1rem; color: var(--grey-medium); border-bottom: 3px solid transparent; transition: all 0.2s ease; font-weight: 500; white-space: nowrap; }
+        .panel-tab:hover { background-color: var(--grey-lighter); color: var(--primary-main); }
+        .panel-tab.panel-tab-active { border-color: var(--primary-main); color: var(--primary-main); background-color: var(--text-light); font-weight: 600; }
+        .panel-body table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .panel-body th, .panel-body td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--grey-lighter); }
+        .panel-body thead th { background-color: var(--grey-lighter); color: var(--grey-dark); font-weight: 600; border-bottom-width: 2px; border-color: var(--grey-light); position: sticky; top: 0; /* Make headers sticky */ z-index: 1; }
+        .panel-body tbody tr:nth-child(even) { background-color: var(--grey-lightest); }
+        .panel-body tbody tr:hover { background-color: var(--primary-lightest); }
+        .panel-body button { font-size: 0.8rem; padding: 5px 10px; background: var(--primary-main); color: var(--text-light); border: none; border-radius: var(--border-radius); margin-right: 5px; cursor: pointer; transition: background-color 0.2s; }
+        .panel-body button.reassign-personnel-mgmt { background: var(--status-blue); }
+        .panel-body button:hover { opacity: 0.85; }
+        .panel-body .panel-search-filter { display: flex; gap: 15px; margin-bottom: 20px; padding: 15px; background-color: var(--grey-lightest); border-radius: var(--border-radius); border: 1px solid var(--grey-lighter); flex-wrap: wrap; }
+        .panel-body .panel-search-filter input, .panel-body .panel-search-filter select { font-size: 0.9rem; padding: 8px 12px; border: 1px solid var(--grey-lighter); border-radius: var(--border-radius); flex: 1 1 180px; /* Allow grow/shrink, base width */ }
 
-        .panel-body table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
-
-        .panel-body th,
-        .panel-body td {
-            padding: 10px 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--grey-lighter);
-        }
-
-        .panel-body thead th {
-            background-color: var(--grey-lighter);
-            color: var(--grey-dark);
-            font-weight: 600;
-            border-bottom-width: 2px;
-            border-color: var(--grey-light);
-        }
-
-        .panel-body tbody tr:nth-child(even) {
-            background-color: var(--grey-lightest);
-        }
-
-        .panel-body tbody tr:hover {
-            background-color: var(--primary-lightest);
-        }
-
-        .panel-body button {
-            font-size: 0.8rem;
-            padding: 5px 10px;
-            background: var(--primary-main);
-            color: var(--text-light);
-            border: none;
-            border-radius: var(--border-radius);
-            margin-right: 5px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .panel-body button.reassign-personnel-mgmt {
-            background: var(--status-blue);
-        }
-
-        .panel-body button:hover {
-            opacity: 0.85;
-        }
-
-        .panel-body .panel-search-filter {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: var(--grey-lightest);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--grey-lighter);
-            flex-wrap: wrap;
-            /* Allow wrapping on smaller screens */
-        }
-
-        .panel-body .panel-search-filter input,
-        .panel-body .panel-search-filter select {
-            font-size: 0.9rem;
-            padding: 8px 12px;
-            border: 1px solid var(--grey-lighter);
-            border-radius: var(--border-radius);
-            flex-grow: 1;
-            /* Allow inputs/selects to grow */
-        }
-
-        #system-notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-md);
-            z-index: 1060;
-            font-size: 0.9rem;
-            max-width: 400px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.3s, transform 0.3s;
-        }
+        /* --- System Notification (Unchanged) --- */
+        #system-notification { position: fixed; bottom: 20px; right: 20px; padding: 15px 20px; border-radius: var(--border-radius); box-shadow: var(--shadow-md); z-index: 1060; font-size: 0.9rem; max-width: 400px; opacity: 0; transform: translateY(20px); transition: opacity 0.3s, transform 0.3s; }
+        #system-notification div { display: flex; align-items: center; gap: 10px; }
+        #notification-icon { font-weight: bold; font-size: 1.1rem; }
 
-        #system-notification div {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        #notification-icon {
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
+        /* --- Responsive Adjustments --- */
 
-        /* --- Responsive --- */
         @media (max-width: 1400px) {
+            /* Reduce details panel width slightly earlier */
             .details-panel {
                 flex-basis: 320px;
                 max-width: 380px;
@@ -1175,85 +468,91 @@
         }
 
         @media (max-width: 1200px) {
+             /* Switch dashboard layout to vertical */
             .dashboard {
                 flex-direction: column;
-                overflow-y: auto;
-                /* Allow scrolling if content overflows */
+                overflow-y: auto; /* Allow dashboard section to scroll if needed */
+                overflow-x: hidden;
             }
 
             .visualization {
-                flex-basis: auto;
-                /* Let height be determined by content/container */
-                min-height: 450px;
-                /* Ensure minimum height for viz */
-                height: 60vh;
-                /* Set a relative height */
-                flex-grow: 1;
-                /* Allow it to take space */
+                flex-basis: auto; /* Let height be more flexible */
+                min-height: 450px; /* Ensure minimum height for viz */
+                height: 60vh; /* Relative height */
+                flex-grow: 1; /* Allow grow/shrink */
                 flex-shrink: 1;
-                /* Allow shrinking */
             }
 
             .details-panel {
-                flex-basis: auto;
-                /* Let height be determined by content/container */
-                max-height: none;
-                /* Remove max-height */
-                max-width: none;
-                /* Remove max-width */
-                height: 40vh;
-                /* Set a relative height */
-                overflow-y: auto;
-                /* Ensure it's scrollable */
-                flex-grow: 1;
+                flex-basis: auto; /* Let height be more flexible */
+                max-height: none; /* Remove max-height */
+                max-width: none; /* Remove max-width */
+                height: 40vh; /* Relative height */
+                overflow-y: auto; /* Ensure it's scrollable */
+                flex-grow: 1; /* Allow grow/shrink */
                 flex-shrink: 1;
+                /* border-top: 1px solid var(--grey-lighter); Add separator */
+                /* margin-top: 15px; Add space */
             }
 
+            /* Allow container to grow naturally when dashboard is column */
             .container {
-                height: auto;
-                /* Allow container to grow */
-                min-height: 100%;
-                /* Try to fill viewport */
+                height: 100%; /* Try to fill viewport height */
+                 /* REMOVED height: auto; */
+                 /* REMOVED min-height: 100%; */
             }
         }
 
         @media (max-width: 992px) {
+            /* Smaller base font size */
             body {
                 font-size: 14px;
             }
 
+            /* Stack controls vertically */
             .controls {
                 flex-direction: column;
-                align-items: stretch;
+                align-items: stretch; /* Make groups full width */
+                gap: 15px; /* Adjust gap for vertical layout */
             }
 
             .control-group {
-                min-width: auto;
+                min-width: auto; /* Remove min-width */
+                flex-basis: auto; /* Reset flex basis */
             }
 
+            .filter-container label + button {
+                margin-top: 8px; /* Ensure button space */
+            }
+
+            /* Adjust visualization height */
             .visualization {
                 min-height: 400px;
+                height: 55vh; /* Slightly smaller proportion */
             }
+             .details-panel {
+                 height: 45vh; /* Slightly larger proportion */
+             }
         }
 
         @media (max-width: 768px) {
-            body {
-                font-size: 13px;
-                /* Allow body scroll on small screens */
-                overflow: auto;
-            }
-
-            html,
-            body {
-                height: auto;
-                /* Allow content to determine height */
+            /* Allow body scroll on small screens */
+            html, body {
+                height: auto; /* Allow content to determine height */
+                overflow-y: auto; /* Enable vertical scroll */
             }
 
             .container {
-                height: auto;
-                min-height: 100vh;
-                /* Try to fill viewport still */
-                padding: 10px;
+                height: auto; /* Let container grow with content */
+                min-height: 100vh; /* Try to fill viewport height */
+                padding: 10px; /* Reduce padding */
+                border-radius: 0; /* Optional: remove radius on mobile */
+                box-shadow: none; /* Optional: remove shadow on mobile */
+            }
+
+             /* Further reduce base font size */
+             body {
+                font-size: 13px;
             }
 
             .header h1 {
@@ -1275,139 +574,87 @@
 
             .details-panel {
                 padding: 15px;
-                height: auto;
-                /* Adjust height */
-                min-height: 250px;
+                height: auto; /* Let content dictate height more */
+                min-height: 250px; /* Keep a reasonable min height */
             }
 
             .aggregated-list,
             .children-list {
-                max-height: 180px;
-                /* Reduce max height on smaller screens */
+                max-height: 180px; /* Reduce max height */
             }
 
 
-            .modal-header h3,
-            .panel-header h3 {
-                font-size: 1.1rem;
-            }
-
-            #management-panel {
-                width: 95%;
-                height: 90vh;
-                /* Adjust height */
-            }
+            .modal-header h3, .panel-header h3 { font-size: 1.1rem; }
+            #management-panel { width: 100%; max-width: 600px; /* Make mgmt panel narrower */ height: 90vh; }
 
             .visualization {
                 min-height: 350px;
-                height: 55vh;
+                height: 50vh; /* Adjust height ratio */
             }
         }
 
         @media (max-width: 576px) {
+            /* Smallest screens: Fine-tune spacing and sizes */
             body {
-                font-size: 12px;
+                font-size: 12px; /* Even smaller base font */
             }
 
+            .container {
+                padding: 8px; /* Further reduce padding */
+            }
+
+            /* Stack header items */
             .header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 10px;
             }
 
+            /* Adjust actions layout for stacking */
             .actions {
                 width: 100%;
-                display: flex;
                 justify-content: flex-start;
-                flex-wrap: wrap;
-                /* Allow buttons to wrap */
-                gap: 5px;
+                gap: 5px; /* Reduce gap */
             }
-
             .actions button {
-                margin-left: 0;
-                /* Remove margin for wrapped buttons */
+                /* margin-left: 0; No left margin when wrapped */
+                 flex: 1 1 auto; /* Allow buttons to grow/shrink */
             }
 
+            .controls { gap: 10px; }
+            .kpi-container { gap: 5px; margin-bottom: 10px; }
+            .kpi-card { padding: 8px; min-width: 80px; flex-basis: 80px; max-width: none; }
+            .kpi-value { font-size: 1.1rem; }
+            .kpi-label { font-size: 0.65rem; }
+            .breadcrumb { font-size: 0.8rem; }
 
-            .controls {
-                gap: 10px;
-            }
+            .modal-body, .panel-body { padding: 15px; }
+            .panel-tabs { /* Tabs already wrap */ }
+            .panel-tab { padding: 10px 15px; font-size: 0.9rem; }
+            .modal-footer { justify-content: space-between; } /* Space out buttons */
+            .modal-footer button { flex: 1; } /* Make footer buttons take equal space */
 
-            .kpi-container {
-                gap: 5px;
-                margin-bottom: 10px;
-            }
+            /* Adjust vis/details height */
+            .visualization { min-height: 300px; height: 45vh; }
+            .details-panel { min-height: 200px; }
 
-            .kpi-card {
-                padding: 8px;
-                min-width: 80px;
-                flex-basis: 80px;
-                /* Give base size */
-            }
+            .aggregated-list, .children-list { max-height: 150px; } /* Further reduce list height */
 
-            .kpi-value {
-                font-size: 1.1rem;
-            }
+            /* Adjust list item appearance */
+            .list-item { padding: 6px 8px; }
+            .item-icon { width: 30px; height: 30px; margin-right: 8px; font-size: 0.8rem; }
+            .item-name { font-size: 0.85rem; gap: 4px; }
+            .item-id, .item-detail, .item-location { font-size: 0.7rem; }
+            .alert { font-size: 0.65rem; padding: 2px 5px; }
+            .action-btn { font-size: 1.1rem; padding: 2px; }
+            .item-actions { gap: 5px; padding-left: 5px; }
 
-            .kpi-label {
-                font-size: 0.65rem;
-            }
-
-            .breadcrumb {
-                font-size: 0.8rem;
-            }
-
-            .modal-body,
-            .panel-body {
-                padding: 15px;
-            }
-
-            .panel-tabs {
-                flex-wrap: wrap;
-            }
-
-            .panel-tab {
-                padding: 10px 15px;
-                font-size: 0.9rem;
-            }
-
-            .visualization {
-                min-height: 300px;
-                height: 50vh;
-            }
-
-            .details-panel {
-                min-height: 200px;
-            }
-
-            .aggregated-list,
-            .children-list {
-                max-height: 150px;
-                /* Further reduce max height */
-            }
-
-            .item-icon {
-                width: 30px;
-                height: 30px;
-                margin-right: 8px;
-                font-size: 0.8rem;
-            }
-
-            .item-name {
-                font-size: 0.85rem;
-            }
-
-            .item-id,
-            .item-detail,
-            .item-location {
-                font-size: 0.7rem;
-            }
-
-            .alert {
-                font-size: 0.65rem;
-                padding: 2px 5px;
-            }
+            /* Management Panel Table adjustments */
+             .panel-body th, .panel-body td { padding: 8px 6px; }
+             .panel-body button { padding: 4px 8px; font-size: 0.75rem; margin-right: 3px; }
+             .panel-body .panel-search-filter { gap: 10px; padding: 10px; }
+             .panel-body .panel-search-filter input,
+             .panel-body .panel-search-filter select { flex-basis: 150px; }
         }
     </style>
 </head>
@@ -1420,8 +667,7 @@
             <div class="actions">
                 <!-- Management Button prepended by JS -->
                 <button id="export-csv" title="Export current view data to CSV">Export CSV</button>
-                <button id="export-pdf" title="Export current view data to PDF (Requires Server Setup)" disabled>Export
-                    PDF</button>
+                <button id="export-pdf" title="Export current view data to PDF (Requires Server Setup)" disabled>Export PDF</button>
             </div>
         </div>
         <div class="controls">
@@ -1494,6 +740,8 @@
     </div><!-- End Container -->
 
     <div id="tooltip" class="tooltip" style="display: none;"></div>
+
+    <!-- Management Panel / Modal Placeholders will be created by JS -->
 
     <script>
         // --- Data (SAME AS PROVIDED IN YOUR "OG CODE" PROMPT) ---
@@ -1584,7 +832,7 @@
             ]
         };
 
-        // --- Helper Functions (SAME AS PROVIDED IN YOUR "OG CODE" PROMPT) ---
+        // --- Helper Functions (UNCHANGED from Original) ---
         function calculateAggregates(node) { node.allInmates = []; node.allPersonnel = []; if (node.type === 'cell' || node.type === 'dormitory') { node.inmates = node.inmates || []; node.assignedPersonnel = node.assignedPersonnel || []; node.occupancy = node.inmates.length; node.capacity = node.capacity || 0; node.personnel = node.assignedPersonnel.length; node.allInmates = node.inmates.map(inmate => ({ ...inmate, location: node.name, locationId: node.id })); node.allPersonnel = node.assignedPersonnel.map(person => ({ ...person, location: node.name, locationId: node.id })); const occupancyRatio = node.capacity > 0 ? node.occupancy / node.capacity : 0; let baseStatus = "normal"; if (occupancyRatio > 1) baseStatus = "overcapacity"; else if (occupancyRatio === 1) baseStatus = "full"; else if (occupancyRatio >= 0.85) baseStatus = "near_capacity"; else if (node.occupancy === 0) baseStatus = "empty"; node.status = node.status || baseStatus; } else if (node.children && node.children.length > 0) { node.occupancy = 0; node.capacity = 0; node.personnel = 0; node.children.forEach(child => { calculateAggregates(child); node.occupancy += child.occupancy; node.capacity += child.capacity; node.personnel += child.personnel; if (child.allInmates) node.allInmates = [...node.allInmates, ...child.allInmates]; if (child.allPersonnel) node.allPersonnel = [...node.allPersonnel, ...child.allPersonnel]; }); const occupancyRatio = node.capacity > 0 ? node.occupancy / node.capacity : 0; const hasOver = node.children.some(c => ["overcapacity", "overcapacity_alert"].includes(c.status)); const hasNear = node.children.some(c => ["full", "near_capacity", "capacity_warning"].includes(c.status)); const hasRisk = node.children.some(c => ["high_risk", "isolation", "medical_isolation"].includes(c.status)); let aggStatus = "normal"; if (hasOver || occupancyRatio > 1) aggStatus = "overcapacity_alert"; else if (hasRisk) aggStatus = "high_risk_contained"; else if (hasNear || occupancyRatio >= 0.9) aggStatus = "capacity_warning"; node.status = node.status || aggStatus; } else { node.occupancy = 0; node.capacity = 0; node.personnel = 0; node.status = node.status || "unknown"; } }
         function getNodeColor(d) { const data = d.data || d; const status = data.status || "unknown"; const ratio = data.capacity > 0 ? (data.occupancy || 0) / data.capacity : 0; switch (status) { case "overcapacity": case "overcapacity_alert": return "var(--status-red)"; case "high_risk": case "isolation": case "medical_isolation": return "var(--status-red)"; case "high_risk_contained": return "var(--status-orange)"; case "full": case "capacity_warning": return "var(--status-orange)"; case "near_capacity": case "watch": case "protective_custody": return "var(--status-amber)"; case "medical": case "transfer_pending": return "var(--primary-light)"; case "empty": return "var(--status-grey)"; case "work_release": return "var(--status-teal)"; case "normal": default: if (ratio >= 0.85) return "var(--primary-main)"; else if (ratio >= 0.5) return "var(--primary-light)"; else if (ratio > 0) return "var(--primary-lighter)"; else return "var(--status-grey)"; } }
         function capitalizeFirstLetter(string) { return string ? string.charAt(0).toUpperCase() + string.slice(1) : ''; }
@@ -1599,7 +847,7 @@
         function exportDataToCsv() { if (!currentNode) return; let csvContent = "data:text/csv;charset=utf-8,"; const headers = ["Level", "ID", "Name", "Type", "Status", "Occupancy", "Capacity", "Personnel", "Inmate_ID", "Inmate_Name", "Inmate_Status", "Inmate_Security", "Personnel_ID", "Personnel_Name", "Personnel_Role"]; csvContent += headers.map(escapeCsvValue).join(",") + "\r\n"; function addNodeToCsv(node, level) { const nodeRow = [level, node.id, node.name, node.type, node.status, node.occupancy, node.capacity, node.personnel, "", "", "", "", "", "", ""]; csvContent += nodeRow.map(escapeCsvValue).join(",") + "\r\n"; (node.allInmates || []).forEach(inmate => { const inmateRow = [level + 1, node.id, node.name, "Inmate Detail", "", "", "", "", inmate.id, inmate.name, inmate.status, inmate.securityLevel, "", "", ""]; csvContent += inmateRow.map(escapeCsvValue).join(",") + "\r\n"; }); (node.allPersonnel || []).forEach(person => { const personRow = [level + 1, node.id, node.name, "Personnel Detail", "", "", "", "", "", "", "", "", person.id, person.name, person.role]; csvContent += personRow.map(escapeCsvValue).join(",") + "\r\n"; }); } addNodeToCsv(currentNode, 0); const encodedUri = encodeURI(csvContent); const link = document.createElement("a"); link.setAttribute("href", encodedUri); const filename = `${currentNode.name.replace(/[^a-z0-9]/gi, '_')}_view_export.csv`; link.setAttribute("download", filename); document.body.appendChild(link); link.click(); document.body.removeChild(link); }
         function showNotification(message, type = 'info') { d3.select("#system-notification").remove(); const notification = d3.select("body").append("div").attr("id", "system-notification").style("opacity", 0).html(`<div><span id="notification-icon"></span><span>${message}</span></div>`); let bgColor, color, borderColor, icon; switch (type) { case 'success': bgColor = '#d4edda'; color = '#155724'; borderColor = '#28a745'; icon = '✓'; break; case 'warning': bgColor = '#fff3cd'; color = '#856404'; borderColor = '#ffc107'; icon = '⚠'; break; case 'error': bgColor = '#f8d7da'; color = '#721c24'; borderColor = '#dc3545'; icon = '✗'; break; default: bgColor = '#d1ecf1'; color = '#0c5460'; borderColor = '#17a2b8'; icon = 'ℹ'; break; } notification.style("background-color", bgColor).style("color", color).style("border-left", `4px solid ${borderColor}`); notification.select("#notification-icon").text(icon); notification.transition().duration(300).style("opacity", 1).style("transform", "translateY(0)"); setTimeout(() => { notification.transition().duration(300).style("opacity", 0).style("transform", "translateY(20px)").end().then(() => notification.remove()); }, 4000); }
 
-        // --- Global Variables (SAME AS PROVIDED IN YOUR "OG CODE" PROMPT) ---
+        // --- Global Variables (UNCHANGED from Original) ---
         let currentNode = null, selectedNodeData = null, currentLayout = null;
         let currentSizing = 'occupancy', activeFilters = { status: '', security: '' };
         const treemapContainer = d3.select("#treemap"), visualizationArea = d3.select(".visualization");
@@ -1609,18 +857,15 @@
         const clearFiltersBtn = document.getElementById('clear-filters-btn');
         const sizingRadios = document.querySelectorAll('input[name="sizing"]');
 
-
-        // --- Core Rendering Function (ONLY PADDING ADJUSTED) ---
+        // --- Core Rendering Function (UNCHANGED from Original - Padding already minimal) ---
         function renderTreemap(data) {
-            // console.log("Rendering treemap for:", data?.name || "Unknown Node"); // Less verbose logging
             if (!data) { console.error("RenderTreemap called with invalid data."); visualizationArea.select(".loading").style("display", "none"); treemapContainer.html('<div style="padding:20px; text-align:center; color: red;">Error: Invalid data.</div>'); return; }
             visualizationArea.select(".loading").style("display", "flex");
             treemapContainer.selectAll(".node, .treemap-placeholder").remove();
             currentNode = data;
             const containerNode = treemapContainer.node(); if (!containerNode) { console.error("Treemap container node not found!"); visualizationArea.select(".loading").style("display", "none"); return; }
 
-            // Debounce dimension check slightly
-            setTimeout(() => {
+            setTimeout(() => { // Debounce slightly for layout calculation
                 const containerRect = containerNode.getBoundingClientRect();
                 const width = containerRect.width;
                 const height = containerRect.height;
@@ -1628,10 +873,10 @@
                 if (width <= 0 || height <= 0) {
                     console.warn(`Treemap container invalid dimensions: ${width}x${height}. Layout might be incorrect.`);
                     visualizationArea.select(".loading").style("display", "none");
-                    if (treemapContainer.select(".node").empty()) { // Only show error if truly empty
+                    if (treemapContainer.select(".node").empty()) {
                         treemapContainer.html('<div class="treemap-placeholder" style="padding: 20px; text-align: center; color: #666;">Warning: Container has zero dimensions. Please resize window or check layout.</div>');
                     }
-                    return; // Stop rendering if dimensions are bad
+                    return;
                 }
 
                 if (!data.children || data.children.length === 0) {
@@ -1645,13 +890,12 @@
                     .sum(d => Math.max((currentSizing === 'capacity' ? d?.capacity : d?.occupancy) || 0, 0.1))
                     .sort((a, b) => b.value - a.value);
 
-                // --- THE ONLY CHANGE IS HERE: Adjust padding values ---
                 const treemapLayout = d3.treemap()
                     .size([width, height])
-                    .paddingTop(0)      // CHANGE: Minimal top padding
-                    .paddingInner(1)    // CHANGE: Minimal space between siblings
-                    .paddingOuter(0)    // CHANGE: Minimal outer padding (around the group)
-                    .round(true);                 // --- End of Change ---
+                    .paddingTop(0)      // Minimal top padding
+                    .paddingInner(1)    // Minimal space between siblings
+                    .paddingOuter(0)    // Minimal outer padding
+                    .round(true);
 
                 currentLayout = treemapLayout(root);
 
@@ -1672,7 +916,6 @@
                     .on("mousemove", handleMouseMove)
                     .on("mouseout", handleMouseOut);
 
-                // Node Content Generation (Unchanged)
                 nodes.append("div")
                     .attr("class", "node-content")
                     .html(d => {
@@ -1683,14 +926,10 @@
                         let titleHtml = '', valueHtml = '';
                         const minHeightForTitle = 20, minWidthForTitle = 35;
                         const minHeightForValue = 45, minWidthForValue = 55;
-
                         if (nodeHeight > minHeightForTitle && nodeWidth > minWidthForTitle) {
                             titleHtml = `<div class="node-title">${name}</div>`;
-                            if (nodeHeight > minHeightForValue && nodeWidth > minWidthForValue) {
-                                valueHtml = `<div class="node-value">${valueText}</div>`;
-                            }
-                        }
-                        else if (nodeHeight > 12 && nodeWidth > 12) {
+                            if (nodeHeight > minHeightForValue && nodeWidth > minWidthForValue) { valueHtml = `<div class="node-value">${valueText}</div>`; }
+                        } else if (nodeHeight > 12 && nodeWidth > 12) {
                             const initials = name.split(/\s+/).map(word => word[0]).join('').substring(0, 3);
                             titleHtml = `<div class="node-title" style="font-size: 9px; text-align: center; width:100%; line-height: ${nodeHeight}px; margin:0; padding: 0; display: flex; align-items: center; justify-content: center;">${initials || '?'}</div>`;
                         }
@@ -1700,69 +939,26 @@
                 visualizationArea.select(".loading").style("display", "none");
                 updateKPIs(data);
 
-                // Restore selection or update panel for current node (Unchanged)
                 const selectedNodeElement = treemapContainer.select(".node.selected");
                 const selectedNodeId = selectedNodeElement.empty() ? null : selectedNodeElement.attr("data-id");
-
                 if (selectedNodeId && currentLayout.children.some(n => n.data.id === selectedNodeId)) {
                     treemapContainer.selectAll(".node").classed("selected", d => d.data.id === selectedNodeId);
                     const currentSelectedData = findNodeById(data, selectedNodeId);
-                    if (currentSelectedData) {
-                        selectedNodeData = currentSelectedData;
-                        updateDetailsPanel(selectedNodeData);
-                    } else {
-                        selectedNodeData = data; // Fallback
-                        updateDetailsPanel(data);
-                        treemapContainer.selectAll(".node").classed("selected", false);
-                    }
+                    if (currentSelectedData) { selectedNodeData = currentSelectedData; updateDetailsPanel(selectedNodeData); }
+                    else { selectedNodeData = data; updateDetailsPanel(data); treemapContainer.selectAll(".node").classed("selected", false); }
                 } else {
-                    selectedNodeData = data;
-                    updateDetailsPanel(data);
-                    treemapContainer.selectAll(".node").classed("selected", false); // Ensure no node is visually selected if we are at root
+                    selectedNodeData = data; updateDetailsPanel(data); treemapContainer.selectAll(".node").classed("selected", false);
                 }
-
                 updateBreadcrumb();
                 applySearchFilter();
                 setupReallocationFeature();
-
-            }, 50);
+            }, 50); // End setTimeout
         }
 
-
-        // --- Interaction Handlers & Tooltip (SAME AS PROVIDED IN YOUR "OG CODE" PROMPT) ---
-        function handleNodeClick(event, d) {
-            event.stopPropagation();
-            selectedNodeData = d.data;
-            treemapContainer.selectAll(".node").classed("selected", false);
-            d3.select(this).classed("selected", true);
-            updateDetailsPanel(selectedNodeData); // This will now show children list if applicable
-            // console.log("Clicked node:", selectedNodeData.name); // Keep console log minimal
-        }
-
-        function handleNodeDblClick(event, d) {
-            event.stopPropagation();
-            if (d.data.children && d.data.children.length > 0) {
-                // console.log("Drilling down into:", d.data.name);
-                treemapContainer.selectAll(".node").classed("selected", false);
-                selectedNodeData = null; // Clear selection when drilling down
-                renderTreemap(d.data);
-            } else {
-                // console.log("Cannot drill down further into:", d.data.name);
-                d3.select(this).transition().duration(75).style("transform", "scale(0.98)").transition().duration(75).style("transform", "scale(1)");
-                showNotification(`No further details within ${d.data.name}.`, 'info');
-            }
-        }
-
-        function handleBreadcrumbClick(nodeId) {
-            // console.log("Breadcrumb click:", nodeId);
-            const targetNode = findNodeById(prisonData, nodeId);
-            if (targetNode && targetNode.id !== currentNode?.id) {
-                treemapContainer.selectAll(".node").classed("selected", false);
-                selectedNodeData = null; // Clear selection when navigating via breadcrumb
-                renderTreemap(targetNode);
-            }
-        }
-
+        // --- Interaction Handlers & Tooltip (UNCHANGED from Original) ---
+        function handleNodeClick(event, d) { event.stopPropagation(); selectedNodeData = d.data; treemapContainer.selectAll(".node").classed("selected", false); d3.select(this).classed("selected", true); updateDetailsPanel(selectedNodeData); }
+        function handleNodeDblClick(event, d) { event.stopPropagation(); if (d.data.children && d.data.children.length > 0) { treemapContainer.selectAll(".node").classed("selected", false); selectedNodeData = null; renderTreemap(d.data); } else { d3.select(this).transition().duration(75).style("transform", "scale(0.98)").transition().duration(75).style("transform", "scale(1)"); showNotification(`No further details within ${d.data.name}.`, 'info'); } }
+        function handleBreadcrumbClick(nodeId) { const targetNode = findNodeById(prisonData, nodeId); if (targetNode && targetNode.id !== currentNode?.id) { treemapContainer.selectAll(".node").classed("selected", false); selectedNodeData = null; renderTreemap(targetNode); } }
         function handleNodeOver(event, d) { d3.select(this).raise(); showEnhancedTooltip(event, d.data); }
         function handleMouseMove(event) { moveTooltip(event); }
         function handleMouseOut() { hideTooltip(); }
@@ -1770,295 +966,41 @@
         function moveTooltip(event) { const tooltipNode = tooltip.node(); if (!tooltipNode) return; const margin = 15; let x = event.pageX + margin; let y = event.pageY + margin; const winWidth = window.innerWidth; const winHeight = window.innerHeight; const scrollX = window.scrollX; const scrollY = window.scrollY; const tooltipWidth = tooltipNode.offsetWidth; const tooltipHeight = tooltipNode.offsetHeight; if (x + tooltipWidth > winWidth + scrollX) { x = event.pageX - tooltipWidth - margin; } if (y + tooltipHeight > winHeight + scrollY) { y = event.pageY - tooltipHeight - margin; } if (x < scrollX) x = scrollX + margin; if (y < scrollY) y = scrollY + margin; tooltip.style("left", `${x}px`).style("top", `${y}px`); }
         function hideTooltip() { tooltip.style("display", "none"); }
 
-        // --- UI Update Functions (SAME AS PROVIDED IN YOUR "OG CODE" PROMPT) ---
+        // --- UI Update Functions (Breadcrumb, KPIs, Details Panel) (UNCHANGED from Original) ---
         function updateBreadcrumb() { breadcrumbContainer.innerHTML = ""; if (!currentNode) return; const path = getNodePath(prisonData, currentNode.id); path.forEach((node, index) => { const item = document.createElement("span"); if (index === path.length - 1) { item.className = "breadcrumb-current"; item.textContent = node.name; breadcrumbContainer.appendChild(item); } else { item.className = "breadcrumb-item"; item.textContent = node.name; item.dataset.id = node.id; item.title = `Go to ${node.name}`; item.addEventListener("click", () => handleBreadcrumbClick(node.id)); breadcrumbContainer.appendChild(item); const separator = document.createElement("span"); separator.className = "breadcrumb-separator"; separator.textContent = " > "; breadcrumbContainer.appendChild(separator); } }); }
         function updateKPIs(data) { if (!data) data = prisonData; const occupancy = data.occupancy ?? 0; const capacity = data.capacity ?? 0; const personnel = data.personnel ?? 0; const occupancyRate = capacity > 0 ? Math.round((occupancy / capacity) * 100) : 0; let staffRatioText = "N/A"; if (personnel > 0 && occupancy > 0) { function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); } const commonDivisor = gcd(personnel, occupancy); staffRatioText = `${personnel / commonDivisor}:${occupancy / commonDivisor}`; } else { staffRatioText = `${personnel}:${occupancy}`; } document.getElementById("kpi-inmates").textContent = occupancy; document.getElementById("kpi-capacity").textContent = capacity; document.getElementById("kpi-occupancy").textContent = `${occupancyRate}%`; document.getElementById("kpi-personnel").textContent = personnel; document.getElementById("kpi-staff-ratio").textContent = staffRatioText; }
-
-        // --- updateDetailsPanel (SAME AS PROVIDED IN YOUR "OG CODE" PROMPT) ---
         function updateDetailsPanel(data) {
             detailsPanel.innerHTML = ''; // Clear previous content first
-
-            if (!data) {
-                detailsPanel.innerHTML = `<h3>Select Item</h3><p class="detail-placeholder">Click an item in the visualization.</p>`;
-                selectedNodeData = null;
-                return;
-            }
-            // console.log("Updating details for:", data.name); // Less verbose
-            const occupancyRate = data.capacity > 0 ? Math.round((data.occupancy / data.capacity) * 100) : 0;
-            const statusText = getStatusText(data.status);
-            const statusClass = getStatusClass(data.status);
-            const isLeaf = !data.children || data.children.length === 0;
-
+            if (!data) { detailsPanel.innerHTML = `<h3>Select Item</h3><p class="detail-placeholder">Click an item in the visualization.</p>`; selectedNodeData = null; return; }
+            const occupancyRate = data.capacity > 0 ? Math.round((data.occupancy / data.capacity) * 100) : 0; const statusText = getStatusText(data.status); const statusClass = getStatusClass(data.status); const isLeaf = !data.children || data.children.length === 0;
             let html = `<h3> ${data.name} <span class="detail-status-pill alert ${statusClass}">${statusText}</span> </h3>`;
-
-            // --- Overview Section ---
-            html += `<div class="detail-item"> <div class="detail-title">Overview</div>`;
-            html += `<div class="detail-info"><strong>Type:</strong> ${capitalizeFirstLetter(data.type)}</div>`;
-            if (data.capacity !== undefined || data.occupancy !== undefined) {
-                html += `<div class="detail-info"><strong>Agg. Occupancy:</strong> ${data.occupancy ?? 0} / ${data.capacity ?? 'N/A'} (${occupancyRate}%)</div>`;
-            }
-            html += `<div class="detail-info"><strong>Agg. Personnel:</strong> ${data.personnel || 0}</div>`;
-
-            // Show directly assigned personnel names in overview ONLY IF it's a leaf node with direct staff
-            // This provides a quick glance, the list below gives more detail.
-            if (isLeaf && data.assignedPersonnel && data.assignedPersonnel.length > 0) {
-                html += `<div class="detail-info" style="margin-top: 5px;"><strong>Directly Assigned:</strong> ${data.assignedPersonnel.map(p => p.name).join(', ')}</div>`;
-            }
-
-            html += `</div>`; // End Overview detail-item
-
-
-            // --- Direct Children Section ---
-            if (data.children && data.children.length > 0) {
-                html += `<div class="detail-item">`;
-                html += `<div class="detail-subtitle">Contained Units (${data.children.length})</div>`;
-                html += `<div class="aggregated-list children-list">`; // Added specific class
-
-                const sortedChildren = [...data.children].sort((a, b) => a.name.localeCompare(b.name));
-
-                sortedChildren.forEach(child => {
-                    const childStatusClass = getStatusClass(child.status);
-                    const childStatusText = getStatusText(child.status);
-                    const childOccupancy = child.occupancy ?? 0;
-                    const childCapacity = child.capacity ?? 'N/A';
-                    const canExploreChild = child.children && child.children.length > 0;
-                    const iconLetter = capitalizeFirstLetter(child.type).substring(0, 1);
-
-                    html += `
-                     <div class="list-item child-list-item" data-child-id="${child.id}" title="${child.name} - ${capitalizeFirstLetter(child.type)}">
-                        <div class="item-icon" style="background-color: ${getNodeColor({ data: child })}; color: var(--text-light); font-size:1em; line-height:1;">
-                           ${iconLetter}
-                        </div>
-                        <div class="item-info">
-                            <div class="item-name">${child.name} <span class="alert ${childStatusClass}" style="font-size:0.65em;">${childStatusText}</span></div>
-                            <div class="item-id"> ${capitalizeFirstLetter(child.type)} | Occ: ${childOccupancy}/${childCapacity} | Staff: ${child.personnel ?? 0}</div>
-                        </div>
-                        <div class="item-actions">
-                            ${canExploreChild ? `<button class="action-btn explore-child-btn" data-child-id="${child.id}" title="Explore ${child.name}">👁️‍🗨️</button>` : ''}
-                         </div>
-                     </div>`;
-                });
-                html += `</div></div>`; // End children list and detail-item
-            }
-
-
-            // --- Inmates Section ---
-            const allContainedInmates = data.allInmates || []; // Aggregated list (relevant for parents)
-            const inmatesToShow = allContainedInmates.filter(inmate =>
-                (!activeFilters.status || inmate.status === activeFilters.status) &&
-                (!activeFilters.security || inmate.securityLevel === activeFilters.security)
-            );
-
-            // Display Aggregated Inmates List (Only if parent node with inmates)
-            if (allContainedInmates.length > 0 && !isLeaf) {
-                html += `<div class="detail-item">`;
-                html += `<div class="detail-subtitle">Aggregated Inmates (${inmatesToShow.length}${(activeFilters.status || activeFilters.security) ? ` of ${allContainedInmates.length} total` : ''})</div>`;
-
-                if (activeFilters.status || activeFilters.security) {
-                    let filterDesc = [];
-                    if (activeFilters.status) filterDesc.push(`Status: ${getStatusText(activeFilters.status)}`);
-                    if (activeFilters.security) filterDesc.push(`Security: ${activeFilters.security}`);
-                    html += `<div class="detail-info" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Filtered by: ${filterDesc.join(', ')}</div>`;
-                }
-
-                html += `<div class="aggregated-list">`;
-                if (inmatesToShow.length > 0) {
-                    inmatesToShow.sort((a, b) => a.name.localeCompare(b.name)).forEach(inmate => {
-                        const inmateStatusClass = getStatusClass(inmate.status);
-                        const inmateStatusText = getStatusText(inmate.status);
-                        const initials = inmate.name.split(' ').map(n => n[0]).join('') || '?';
-                        const locationNode = findNodeById(prisonData, inmate.locationId);
-                        const canRelocate = locationNode && (locationNode.type === 'cell' || locationNode.type === 'dormitory');
-
-                        html += `<div class="list-item">
-                             <div class="item-icon" style="background-color: var(--primary-lightest); color: var(--primary-dark);">${initials}</div>
-                             <div class="item-info">
-                                 <div class="item-name">${inmate.name} <span class="alert ${inmateStatusClass}">${inmateStatusText}</span></div>
-                                 <div class="item-id">ID: ${inmate.id} | Sec: ${inmate.securityLevel || 'N/A'}</div>
-                                 ${data.id !== inmate.locationId ? `<div class="item-location">Loc: ${inmate.location || 'Unknown'}</div>` : ''}
-                             </div>
-                             ${canRelocate ?
-                                `<div class="item-actions">
-                                     <button class="action-btn relocate-inmate-btn" data-inmate-id="${inmate.id}" data-current-location-id="${inmate.locationId}" title="Reallocate ${inmate.name}">➔</button>
-                                  </div>` : '<div class="item-actions" style="width: 30px;"></div>'
-                            }
-                          </div>`;
-                    });
-                } else {
-                    html += `<div style="padding: 10px; text-align: center; color: #888; font-size: 0.8rem;">No inmates match filters${allContainedInmates.length > 0 ? ' within this view' : ''}.</div>`;
-                }
-                html += `</div></div>`;
-            }
-            // Display DIRECT Inmates List (Only for leaf nodes with inmates)
-            else if (isLeaf && data.inmates && data.inmates.length > 0) {
-                html += `<div class="detail-item">`;
-                html += `<div class="detail-subtitle">Inmates in this ${capitalizeFirstLetter(data.type)} (${data.inmates.length})</div>`;
-                html += `<div class="aggregated-list">`;
-                data.inmates.sort((a, b) => a.name.localeCompare(b.name)).forEach(inmate => {
-                    const inmateStatusClass = getStatusClass(inmate.status);
-                    const inmateStatusText = getStatusText(inmate.status);
-                    const initials = inmate.name.split(' ').map(n => n[0]).join('') || '?';
-                    html += `<div class="list-item">
-                             <div class="item-icon" style="background-color: var(--primary-lightest); color: var(--primary-dark);">${initials}</div>
-                             <div class="item-info">
-                                 <div class="item-name">${inmate.name} <span class="alert ${inmateStatusClass}">${inmateStatusText}</span></div>
-                                 <div class="item-id">ID: ${inmate.id} | Sec: ${inmate.securityLevel || 'N/A'}</div>
-                             </div>
-                             <div class="item-actions">
-                                 <button class="action-btn relocate-inmate-btn" data-inmate-id="${inmate.id}" data-current-location-id="${data.id}" title="Reallocate ${inmate.name}">➔</button>
-                             </div>
-                          </div>`;
-                });
-                html += `</div></div>`;
-            }
-            // Message for empty leaf nodes (no inmates)
-            else if (isLeaf && (!data.inmates || data.inmates.length === 0)) {
-                html += `<div class="detail-item"><div class="detail-info" style="text-align:center; color:var(--text-muted); padding: 10px 0;">This ${data.type} is empty.</div></div>`;
-            }
-
-
-            // --- Personnel Section ---
-            const allPersonnelToShow = data.allPersonnel || []; // Aggregated list (relevant for parents)
-
-            // Display Aggregated Personnel List (Only if parent node with personnel)
-            if (allPersonnelToShow.length > 0 && !isLeaf) {
-                html += `<div class="detail-item">`;
-                html += `<div class="detail-subtitle">Aggregated Personnel (${allPersonnelToShow.length})</div>`;
-                html += `<div class="aggregated-list">`;
-                allPersonnelToShow.sort((a, b) => a.name.localeCompare(b.name)).forEach(person => {
-                    const initials = person.name.split(' ').map(n => n[0]).join('') || '?';
-                    const locationNode = findNodeById(prisonData, person.locationId);
-                    const canReassign = locationNode && ['cell', 'dormitory', 'block', 'sector'].includes(locationNode.type);
-
-                    html += `<div class="list-item">
-                         <div class="item-icon" style="background-color: var(--grey-lighter); color: var(--grey-dark);">${initials}</div>
-                         <div class="item-info">
-                             <div class="item-name">${person.name}</div>
-                             <div class="item-detail">Role: ${person.role || 'N/A'} | Shift: ${person.shift || 'N/A'}</div>
-                              ${data.id !== person.locationId ? `<div class="item-location">Assigned: ${person.location || 'Unknown'}</div>` : ''}
-                         </div>
-                         ${canReassign ?
-                            `<div class="item-actions">
-                                 <button class="action-btn reassign-personnel-btn" data-personnel-id="${person.id}" data-current-location-id="${person.locationId}" title="Reassign ${person.name}">➔</button>
-                              </div>` : '<div class="item-actions" style="width: 30px;"></div>'
-                        }
-                      </div>`;
-                });
-                html += `</div></div>`;
-            }
-            // *** NEW BLOCK START: Display DIRECT Personnel List (Only for leaf nodes with personnel) ***
-            else if (isLeaf && data.assignedPersonnel && data.assignedPersonnel.length > 0) {
-                html += `<div class="detail-item">`;
-                html += `<div class="detail-subtitle">Assigned Personnel (${data.assignedPersonnel.length})</div>`;
-                html += `<div class="aggregated-list">`; // Reuse existing list style
-                data.assignedPersonnel.sort((a, b) => a.name.localeCompare(b.name)).forEach(person => {
-                    const initials = person.name.split(' ').map(n => n[0]).join('') || '?';
-                    // Personnel assigned directly to a cell/dorm can usually be reassigned from here
-                    const canReassign = ['cell', 'dormitory'].includes(data.type);
-
-                    html += `<div class="list-item">
-                         <div class="item-icon" style="background-color: var(--grey-lighter); color: var(--grey-dark);">${initials}</div>
-                         <div class="item-info">
-                             <div class="item-name">${person.name}</div>
-                             <div class="item-detail">Role: ${person.role || 'N/A'} | Shift: ${person.shift || 'N/A'}</div>
-                         </div>
-                         ${canReassign ?
-                            `<div class="item-actions">
-                                 <button class="action-btn reassign-personnel-btn" data-personnel-id="${person.id}" data-current-location-id="${data.id}" title="Reassign ${person.name}">➔</button>
-                              </div>` : '<div class="item-actions" style="width: 30px;"></div>' // Placeholder if no action needed
-                        }
-                      </div>`;
-                });
-                html += `</div></div>`; // End direct personnel list
-            }
-            // *** NEW BLOCK END ***
-
+            html += `<div class="detail-item"> <div class="detail-title">Overview</div>`; html += `<div class="detail-info"><strong>Type:</strong> ${capitalizeFirstLetter(data.type)}</div>`; if (data.capacity !== undefined || data.occupancy !== undefined) { html += `<div class="detail-info"><strong>Agg. Occupancy:</strong> ${data.occupancy ?? 0} / ${data.capacity ?? 'N/A'} (${occupancyRate}%)</div>`; } html += `<div class="detail-info"><strong>Agg. Personnel:</strong> ${data.personnel || 0}</div>`; if (isLeaf && data.assignedPersonnel && data.assignedPersonnel.length > 0) { html += `<div class="detail-info" style="margin-top: 5px;"><strong>Directly Assigned:</strong> ${data.assignedPersonnel.map(p => p.name).join(', ')}</div>`; } html += `</div>`;
+            if (data.children && data.children.length > 0) { html += `<div class="detail-item">`; html += `<div class="detail-subtitle">Contained Units (${data.children.length})</div>`; html += `<div class="aggregated-list children-list">`; const sortedChildren = [...data.children].sort((a, b) => a.name.localeCompare(b.name)); sortedChildren.forEach(child => { const childStatusClass = getStatusClass(child.status); const childStatusText = getStatusText(child.status); const childOccupancy = child.occupancy ?? 0; const childCapacity = child.capacity ?? 'N/A'; const canExploreChild = child.children && child.children.length > 0; const iconLetter = capitalizeFirstLetter(child.type).substring(0, 1); html += ` <div class="list-item child-list-item" data-child-id="${child.id}" title="${child.name} - ${capitalizeFirstLetter(child.type)}"> <div class="item-icon" style="background-color: ${getNodeColor({ data: child })}; color: var(--text-light); font-size:1em; line-height:1;"> ${iconLetter} </div> <div class="item-info"> <div class="item-name">${child.name} <span class="alert ${childStatusClass}" style="font-size:0.65em;">${childStatusText}</span></div> <div class="item-id"> ${capitalizeFirstLetter(child.type)} | Occ: ${childOccupancy}/${childCapacity} | Staff: ${child.personnel ?? 0}</div> </div> <div class="item-actions"> ${canExploreChild ? `<button class="action-btn explore-child-btn" data-child-id="${child.id}" title="Explore ${child.name}">👁️‍🗨️</button>` : ''} </div> </div>`; }); html += `</div></div>`; }
+            const allContainedInmates = data.allInmates || []; const inmatesToShow = allContainedInmates.filter(inmate => (!activeFilters.status || inmate.status === activeFilters.status) && (!activeFilters.security || inmate.securityLevel === activeFilters.security));
+            if (allContainedInmates.length > 0 && !isLeaf) { html += `<div class="detail-item">`; html += `<div class="detail-subtitle">Aggregated Inmates (${inmatesToShow.length}${(activeFilters.status || activeFilters.security) ? ` of ${allContainedInmates.length} total` : ''})</div>`; if (activeFilters.status || activeFilters.security) { let filterDesc = []; if (activeFilters.status) filterDesc.push(`Status: ${getStatusText(activeFilters.status)}`); if (activeFilters.security) filterDesc.push(`Security: ${activeFilters.security}`); html += `<div class="detail-info" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Filtered by: ${filterDesc.join(', ')}</div>`; } html += `<div class="aggregated-list">`; if (inmatesToShow.length > 0) { inmatesToShow.sort((a, b) => a.name.localeCompare(b.name)).forEach(inmate => { const inmateStatusClass = getStatusClass(inmate.status); const inmateStatusText = getStatusText(inmate.status); const initials = inmate.name.split(' ').map(n => n[0]).join('') || '?'; const locationNode = findNodeById(prisonData, inmate.locationId); const canRelocate = locationNode && (locationNode.type === 'cell' || locationNode.type === 'dormitory'); html += `<div class="list-item"> <div class="item-icon" style="background-color: var(--primary-lightest); color: var(--primary-dark);">${initials}</div> <div class="item-info"> <div class="item-name">${inmate.name} <span class="alert ${inmateStatusClass}">${inmateStatusText}</span></div> <div class="item-id">ID: ${inmate.id} | Sec: ${inmate.securityLevel || 'N/A'}</div> ${data.id !== inmate.locationId ? `<div class="item-location">Loc: ${inmate.location || 'Unknown'}</div>` : ''} </div> ${canRelocate ? `<div class="item-actions"> <button class="action-btn relocate-inmate-btn" data-inmate-id="${inmate.id}" data-current-location-id="${inmate.locationId}" title="Reallocate ${inmate.name}">➔</button> </div>` : '<div class="item-actions" style="width: 30px;"></div>'} </div>`; }); } else { html += `<div style="padding: 10px; text-align: center; color: #888; font-size: 0.8rem;">No inmates match filters${allContainedInmates.length > 0 ? ' within this view' : ''}.</div>`; } html += `</div></div>`; }
+            else if (isLeaf && data.inmates && data.inmates.length > 0) { html += `<div class="detail-item">`; html += `<div class="detail-subtitle">Inmates in this ${capitalizeFirstLetter(data.type)} (${data.inmates.length})</div>`; html += `<div class="aggregated-list">`; data.inmates.sort((a, b) => a.name.localeCompare(b.name)).forEach(inmate => { const inmateStatusClass = getStatusClass(inmate.status); const inmateStatusText = getStatusText(inmate.status); const initials = inmate.name.split(' ').map(n => n[0]).join('') || '?'; html += `<div class="list-item"> <div class="item-icon" style="background-color: var(--primary-lightest); color: var(--primary-dark);">${initials}</div> <div class="item-info"> <div class="item-name">${inmate.name} <span class="alert ${inmateStatusClass}">${inmateStatusText}</span></div> <div class="item-id">ID: ${inmate.id} | Sec: ${inmate.securityLevel || 'N/A'}</div> </div> <div class="item-actions"> <button class="action-btn relocate-inmate-btn" data-inmate-id="${inmate.id}" data-current-location-id="${data.id}" title="Reallocate ${inmate.name}">➔</button> </div> </div>`; }); html += `</div></div>`; }
+            else if (isLeaf && (!data.inmates || data.inmates.length === 0)) { html += `<div class="detail-item"><div class="detail-info" style="text-align:center; color:var(--text-muted); padding: 10px 0;">This ${data.type} is empty.</div></div>`; }
+            const allPersonnelToShow = data.allPersonnel || [];
+            if (allPersonnelToShow.length > 0 && !isLeaf) { html += `<div class="detail-item">`; html += `<div class="detail-subtitle">Aggregated Personnel (${allPersonnelToShow.length})</div>`; html += `<div class="aggregated-list">`; allPersonnelToShow.sort((a, b) => a.name.localeCompare(b.name)).forEach(person => { const initials = person.name.split(' ').map(n => n[0]).join('') || '?'; const locationNode = findNodeById(prisonData, person.locationId); const canReassign = locationNode && ['cell', 'dormitory', 'block', 'sector'].includes(locationNode.type); html += `<div class="list-item"> <div class="item-icon" style="background-color: var(--grey-lighter); color: var(--grey-dark);">${initials}</div> <div class="item-info"> <div class="item-name">${person.name}</div> <div class="item-detail">Role: ${person.role || 'N/A'} | Shift: ${person.shift || 'N/A'}</div> ${data.id !== person.locationId ? `<div class="item-location">Assigned: ${person.location || 'Unknown'}</div>` : ''} </div> ${canReassign ? `<div class="item-actions"> <button class="action-btn reassign-personnel-btn" data-personnel-id="${person.id}" data-current-location-id="${person.locationId}" title="Reassign ${person.name}">➔</button> </div>` : '<div class="item-actions" style="width: 30px;"></div>'} </div>`; }); html += `</div></div>`; }
+            else if (isLeaf && data.assignedPersonnel && data.assignedPersonnel.length > 0) { html += `<div class="detail-item">`; html += `<div class="detail-subtitle">Assigned Personnel (${data.assignedPersonnel.length})</div>`; html += `<div class="aggregated-list">`; data.assignedPersonnel.sort((a, b) => a.name.localeCompare(b.name)).forEach(person => { const initials = person.name.split(' ').map(n => n[0]).join('') || '?'; const canReassign = ['cell', 'dormitory'].includes(data.type); html += `<div class="list-item"> <div class="item-icon" style="background-color: var(--grey-lighter); color: var(--grey-dark);">${initials}</div> <div class="item-info"> <div class="item-name">${person.name}</div> <div class="item-detail">Role: ${person.role || 'N/A'} | Shift: ${person.shift || 'N/A'}</div> </div> ${canReassign ? `<div class="item-actions"> <button class="action-btn reassign-personnel-btn" data-personnel-id="${person.id}" data-current-location-id="${data.id}" title="Reassign ${person.name}">➔</button> </div>` : '<div class="item-actions" style="width: 30px;"></div>'} </div>`; }); html += `</div></div>`; }
             detailsPanel.innerHTML = html;
-            attachDetailActionListeners(); // Re-attach listeners
+            attachDetailActionListeners();
         }
 
-        // --- Action Listeners (SAME AS PROVIDED IN YOUR "OG CODE" PROMPT) ---
-        function attachDetailActionListeners() {
-            detailsPanel.removeEventListener('click', handleDetailActionClick); // Remove old listener first
-            detailsPanel.addEventListener('click', handleDetailActionClick);
-        }
+        // --- Action Listeners (UNCHANGED from Original) ---
+        function attachDetailActionListeners() { detailsPanel.removeEventListener('click', handleDetailActionClick); detailsPanel.addEventListener('click', handleDetailActionClick); }
         function handleDetailActionClick(event) {
-            const relocateBtn = event.target.closest('.relocate-inmate-btn');
-            const reassignBtn = event.target.closest('.reassign-personnel-btn');
-            const exploreBtn = event.target.closest('.explore-child-btn');
-
-            if (relocateBtn) {
-                event.stopPropagation();
-                const inmateId = relocateBtn.dataset.inmateId;
-                const currentLocationId = relocateBtn.dataset.currentLocationId;
-                const inmateLocationNode = findNodeById(prisonData, currentLocationId);
-                const inmateData = inmateLocationNode?.inmates?.find(i => i.id === inmateId);
-                if (inmateData && inmateLocationNode) { showReallocationModal(inmateData, inmateLocationNode); }
-                else { console.error("Details Panel Realloc Error:", { inmateId, currentLocationId }); showNotification("Error finding inmate data.", "error"); }
-            } else if (reassignBtn) {
-                event.stopPropagation();
-                const personnelId = reassignBtn.dataset.personnelId;
-                const currentLocationId = reassignBtn.dataset.currentLocationId;
-                const personnelLocationNode = findNodeById(prisonData, currentLocationId);
-                const personnelData = personnelLocationNode?.assignedPersonnel?.find(p => p.id === personnelId);
-                if (personnelData && personnelLocationNode) { showPersonnelReassignmentModal(personnelData, personnelLocationNode); }
-                else { console.error("Details Panel Reassign Error:", { personnelId, currentLocationId }); showNotification("Error finding personnel data.", "error"); }
-            } else if (exploreBtn) { // <-- Handle Explore Button Click
-                event.stopPropagation();
-                const childId = exploreBtn.dataset.childId;
-                const childNodeData = findNodeById(prisonData, childId); // Find the child node's data
-                if (childNodeData) {
-                    // console.log("Exploring child from details panel:", childNodeData.name);
-                    treemapContainer.selectAll(".node").classed("selected", false); // Clear selection in main viz
-                    selectedNodeData = null; // Clear logical selection
-                    renderTreemap(childNodeData); // Render the child node (drill down)
-                } else {
-                    console.error("Explore Child Error: Could not find child node with ID:", childId);
-                    showNotification("Error finding unit to explore.", "error");
-                }
-            }
+            const relocateBtn = event.target.closest('.relocate-inmate-btn'); const reassignBtn = event.target.closest('.reassign-personnel-btn'); const exploreBtn = event.target.closest('.explore-child-btn');
+            if (relocateBtn) { event.stopPropagation(); const inmateId = relocateBtn.dataset.inmateId; const currentLocationId = relocateBtn.dataset.currentLocationId; const inmateLocationNode = findNodeById(prisonData, currentLocationId); const inmateData = inmateLocationNode?.inmates?.find(i => i.id === inmateId); if (inmateData && inmateLocationNode) { showReallocationModal(inmateData, inmateLocationNode); } else { console.error("Details Panel Realloc Error:", { inmateId, currentLocationId }); showNotification("Error finding inmate data.", "error"); } }
+            else if (reassignBtn) { event.stopPropagation(); const personnelId = reassignBtn.dataset.personnelId; const currentLocationId = reassignBtn.dataset.currentLocationId; const personnelLocationNode = findNodeById(prisonData, currentLocationId); const personnelData = personnelLocationNode?.assignedPersonnel?.find(p => p.id === personnelId); if (personnelData && personnelLocationNode) { showPersonnelReassignmentModal(personnelData, personnelLocationNode); } else { console.error("Details Panel Reassign Error:", { personnelId, currentLocationId }); showNotification("Error finding personnel data.", "error"); } }
+            else if (exploreBtn) { event.stopPropagation(); const childId = exploreBtn.dataset.childId; const childNodeData = findNodeById(prisonData, childId); if (childNodeData) { treemapContainer.selectAll(".node").classed("selected", false); selectedNodeData = null; renderTreemap(childNodeData); } else { console.error("Explore Child Error: Could not find child node with ID:", childId); showNotification("Error finding unit to explore.", "error"); } }
         }
 
+        // --- Filtering and Searching (UNCHANGED from Original) ---
+        function applyActiveFilters() { const nodes = treemapContainer.selectAll(".node"); const hasDropdownFilters = activeFilters.status || activeFilters.security; nodes.each(function (d) { const nodeElement = d3.select(this); const isSearchMatch = nodeElement.classed("search-match"); const matchesDropdowns = nodeMatchesFilters(d.data, activeFilters); const isFilteredOut = hasDropdownFilters && !matchesDropdowns && !isSearchMatch; nodeElement.classed("filtered-out", isFilteredOut); }); const dataForPanel = selectedNodeData || currentNode; if (dataForPanel) { updateDetailsPanel(dataForPanel); } }
+        function applySearchFilter() { const searchTerm = searchInput.value.toLowerCase().trim(); const nodes = treemapContainer.selectAll(".node"); const hasSearch = searchTerm.length > 0; nodes.classed("search-match", false); if (hasSearch) { nodes.each(function (d) { const nodeName = d.data.name?.toLowerCase() || ""; const containedText = (d.data.allInmates?.map(i => `${i.name} ${i.id}`) || []).concat(d.data.allPersonnel?.map(p => `${p.name} ${p.id}`) || []).join(' ').toLowerCase(); const matchesSearch = nodeName.includes(searchTerm) || containedText.includes(searchTerm); d3.select(this).classed("search-match", matchesSearch); }); } applyActiveFilters(); }
 
-        // --- Filtering and Searching (SAME AS PROVIDED IN YOUR "OG CODE" PROMPT) ---
-        function applyActiveFilters() {
-            // console.log("Applying filters state based on:", activeFilters); // Less verbose
-            const nodes = treemapContainer.selectAll(".node");
-            const hasDropdownFilters = activeFilters.status || activeFilters.security;
-
-            nodes.each(function (d) {
-                const nodeElement = d3.select(this);
-                const isSearchMatch = nodeElement.classed("search-match");
-                const matchesDropdowns = nodeMatchesFilters(d.data, activeFilters);
-                const isFilteredOut = hasDropdownFilters && !matchesDropdowns && !isSearchMatch;
-                nodeElement.classed("filtered-out", isFilteredOut);
-            });
-
-            const dataForPanel = selectedNodeData || currentNode;
-            if (dataForPanel) { updateDetailsPanel(dataForPanel); }
-        }
-        function applySearchFilter() {
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            const nodes = treemapContainer.selectAll(".node");
-            const hasSearch = searchTerm.length > 0;
-            // console.log("Applying search:", searchTerm || "None"); // Less verbose
-
-            nodes.classed("search-match", false);
-            if (hasSearch) {
-                nodes.each(function (d) {
-                    const nodeName = d.data.name?.toLowerCase() || "";
-                    const containedText = (d.data.allInmates?.map(i => `${i.name} ${i.id}`) || [])
-                        .concat(d.data.allPersonnel?.map(p => `${p.name} ${p.id}`) || [])
-                        .join(' ').toLowerCase();
-                    const matchesSearch = nodeName.includes(searchTerm) || containedText.includes(searchTerm);
-                    d3.select(this).classed("search-match", matchesSearch);
-                });
-            }
-            applyActiveFilters(); // Always re-apply filters after search change
-        }
-
-
-        // --- Reallocation / Reassignment (SAME AS PROVIDED IN YOUR "OG CODE" PROMPT) ---
+        // --- Reallocation / Reassignment (UNCHANGED from Original) ---
         function setupReallocationFeature() { treemapContainer.on("contextmenu.reallocation", null); treemapContainer.on("contextmenu.reallocation", function (event) { const targetNodeElement = event.target.closest('.node'); if (!targetNodeElement) return; event.preventDefault(); const nodeData = d3.select(targetNodeElement).datum()?.data; if (!nodeData) { console.warn("Could not get data for context menu target."); return; } showReallocationMenu(event, nodeData); }); }
         function showReallocationMenu(event, nodeData) { d3.select("#reallocation-menu").remove(); const menu = d3.select("body").append("div").attr("id", "reallocation-menu").style("opacity", 0); let addedItems = false; if ((nodeData.type === 'cell' || nodeData.type === 'dormitory') && nodeData.inmates && nodeData.inmates.length > 0) { menu.append("div").attr("class", "menu-header").text("Reallocate Inmate"); nodeData.inmates.forEach(inmate => { menu.append("div").attr("class", "menu-item").text(`➔ ${inmate.name} (${inmate.id})`).on("click", () => { showReallocationModal(inmate, nodeData); menu.remove(); }); }); addedItems = true; } if (['cell', 'dormitory', 'block', 'sector'].includes(nodeData.type) && nodeData.assignedPersonnel && nodeData.assignedPersonnel.length > 0) { if (addedItems) menu.append("div").attr("class", "menu-item separator"); menu.append("div").attr("class", "menu-header").text("Reassign Personnel"); nodeData.assignedPersonnel.forEach(person => { menu.append("div").attr("class", "menu-item").text(`➔ ${person.name} (${person.role})`).on("click", () => { showPersonnelReassignmentModal(person, nodeData); menu.remove(); }); }); addedItems = true; } if (!addedItems) { menu.append("div").attr("class", "menu-item").style("color", "#888").text(`No actions for ${nodeData.type}`); } if (addedItems) menu.append("div").attr("class", "menu-item separator"); menu.append("div").attr("class", "menu-item").text("Cancel").on("click", () => menu.remove()); const menuNode = menu.node(); const menuWidth = menuNode.offsetWidth; const menuHeight = menuNode.offsetHeight; const winWidth = window.innerWidth; const winHeight = window.innerHeight; const scrollX = window.scrollX; const scrollY = window.scrollY; const margin = 5; let left = event.pageX + margin; let top = event.pageY + margin; if (left + menuWidth > winWidth + scrollX) { left = event.pageX - menuWidth - margin; } if (top + menuHeight > winHeight + scrollY) { top = event.pageY - menuHeight - margin; } if (left < scrollX) left = scrollX + margin; if (top < scrollY) top = scrollY + margin; menu.style("left", `${left}px`).style("top", `${top}px`).transition().duration(100).style("opacity", 1); d3.select("body").on("click.menu", function (e) { if (!menuNode.contains(e.target)) { menu.remove(); d3.select("body").on("click.menu", null); } }, true); }
         function showReallocationModal(inmate, currentLocation) { if (!inmate || !currentLocation || !currentLocation.id) { showNotification("Error preparing reallocation: Missing data.", "error"); console.error("showReallocationModal missing data:", { inmate, currentLocation }); return; } d3.select("#modal-backdrop").remove(); const backdrop = d3.select("body").append("div").attr("id", "modal-backdrop"); const modal = backdrop.append("div").attr("id", "reallocation-modal"); modal.append("div").attr("class", "modal-header").html(`<h3>Reallocate Inmate</h3><button id="close-modal">×</button>`); const modalBody = modal.append("div").attr("class", "modal-body"); modalBody.append("div").attr("class", "inmate-info").html(`<div style="font-weight: bold;">${inmate.name} (ID: ${inmate.id})</div><div>Current: ${currentLocation.name}</div><div>Security: ${inmate.securityLevel || 'N/A'} | Status: ${getStatusText(inmate.status)}</div>`); const availableLocations = []; function findAvailableLocations(node) { if (node && (node.type === 'cell' || node.type === 'dormitory') && node.id !== currentLocation.id) { if ((node.occupancy ?? 0) < (node.capacity ?? 0)) { availableLocations.push(node); } } if (node?.children) { node.children.forEach(findAvailableLocations); } } findAvailableLocations(prisonData); modalBody.append("div").html(`<label for="location-select">Select New Location:</label><select id="location-select"><option value="">-- Select Location --</option>${availableLocations.sort((a, b) => a.name.localeCompare(b.name)).map(loc => `<option value="${loc.id}">${loc.name} (${loc.occupancy ?? 0}/${loc.capacity ?? 0})</option>`).join('')}</select>`); modalBody.append("div").html(`<label for="reason-input">Reason (Optional):</label><textarea id="reason-input" rows="2"></textarea>`); modal.append("div").attr("class", "modal-footer").html(`<button id="cancel-reallocation">Cancel</button><button id="confirm-reallocation">Confirm Reallocation</button>`); modal.select("#close-modal").on("click", () => backdrop.remove()); modal.select("#cancel-reallocation").on("click", () => backdrop.remove()); backdrop.on("click", function (event) { if (event.target === this) { backdrop.remove(); } }); modal.select("#confirm-reallocation").on("click", () => { const targetLocationId = d3.select("#location-select").property("value"); if (!targetLocationId) { showNotification("Please select a destination location.", "warning"); return; } const targetLocation = findNodeById(prisonData, targetLocationId); if (!targetLocation) { showNotification("Target location data not found.", "error"); console.error("Target location not found for ID:", targetLocationId); return; } if ((targetLocation.occupancy ?? 0) >= (targetLocation.capacity ?? 0)) { showNotification(`Error: ${targetLocation.name} is now full.`, "error"); return; } const reason = d3.select("#reason-input").property("value").trim(); performInmateReallocation(inmate, currentLocation, targetLocation, reason); backdrop.remove(); }); }
@@ -2066,7 +1008,7 @@
         function showPersonnelReassignmentModal(person, currentLocation) { if (!person || !currentLocation || !currentLocation.id) { showNotification("Error preparing reassignment: Missing data.", "error"); console.error("showPersonnelReassignmentModal missing data:", { person, currentLocation }); return; } d3.select("#modal-backdrop").remove(); const backdrop = d3.select("body").append("div").attr("id", "modal-backdrop"); const modal = backdrop.append("div").attr("id", "reassignment-modal"); modal.append("div").attr("class", "modal-header").html(`<h3>Reassign Personnel</h3><button id="close-modal">×</button>`); const modalBody = modal.append("div").attr("class", "modal-body"); modalBody.append("div").attr("class", "personnel-info").html(`<div style="font-weight: bold;">${person.name} (ID: ${person.id})</div><div>Current Assignment: ${currentLocation.name} (${capitalizeFirstLetter(currentLocation.type)})</div><div>Role: ${person.role || 'N/A'} | Current Shift: ${person.shift || 'N/A'}</div>`); const availableLocations = []; function findLocationsForStaff(node) { if (node && ['cell', 'dormitory', 'block', 'sector'].includes(node.type) && node.id !== currentLocation.id) { availableLocations.push(node); } if (node?.children) { node.children.forEach(findLocationsForStaff); } } findLocationsForStaff(prisonData); modalBody.append("div").html(`<label for="location-select">Select New Assignment:</label><select id="location-select"><option value="">-- Select Location --</option>${availableLocations.sort((a, b) => a.name.localeCompare(b.name)).map(loc => `<option value="${loc.id}">${loc.name} (${capitalizeFirstLetter(loc.type)})</option>`).join('')}</select>`); const shifts = ["Day", "Evening", "Night", "On Call"]; modalBody.append("div").html(`<label for="shift-select">Assign Shift:</label><select id="shift-select"><option value="">(Keep Current: ${person.shift || 'N/A'})</option>${shifts.map(s => `<option value="${s}" ${person.shift === s ? 'selected' : ''}>${s}</option>`).join('')}</select>`); modalBody.append("div").html(`<label for="reason-input">Reason (Optional):</label><textarea id="reason-input" rows="2"></textarea>`); modal.append("div").attr("class", "modal-footer").html(`<button id="cancel-reassignment">Cancel</button><button id="confirm-reassignment">Confirm Reassignment</button>`); modal.select("#close-modal").on("click", () => backdrop.remove()); modal.select("#cancel-reassignment").on("click", () => backdrop.remove()); backdrop.on("click", function (event) { if (event.target === this) backdrop.remove(); }); modal.select("#confirm-reassignment").on("click", () => { const targetLocationId = d3.select("#location-select").property("value"); if (!targetLocationId) { showNotification("Please select an assignment location.", "warning"); return; } const targetLocation = findNodeById(prisonData, targetLocationId); if (!targetLocation) { showNotification("Target location data not found.", "error"); console.error("Target location not found for ID:", targetLocationId); return; } const newShift = d3.select("#shift-select").property("value") || person.shift; const reason = d3.select("#reason-input").property("value").trim(); performPersonnelReassignment(person, currentLocation, targetLocation, newShift, reason); backdrop.remove(); }); }
         function performPersonnelReassignment(person, currentLocation, targetLocation, newShift, reason) { if (!person || !person.id || !currentLocation || !currentLocation.id || !targetLocation || !targetLocation.id) { console.error("Reassignment Fail: Invalid data provided", { person, currentLocation, targetLocation }); showNotification("Reassignment failed due to missing data.", "error"); return; } if (!currentLocation.assignedPersonnel) { console.error(`Source location ${currentLocation.name} has no assignedPersonnel array.`); showNotification("Reassignment failed: Source location error.", "error"); return; } const personIndex = currentLocation.assignedPersonnel.findIndex(p => p.id === person.id); if (personIndex < 0) { console.error(`Personnel ${person.id} not found in source location ${currentLocation.name}`); showNotification(`Error: Personnel ${person.name} no longer assigned to ${currentLocation.name}.`, "error"); if (currentNode) renderTreemap(currentNode); return; } const [removedPerson] = currentLocation.assignedPersonnel.splice(personIndex, 1); if (!targetLocation.assignedPersonnel) { targetLocation.assignedPersonnel = []; } removedPerson.shift = newShift; removedPerson.location = targetLocation.name; removedPerson.locationId = targetLocation.id; targetLocation.assignedPersonnel.push(removedPerson); console.log(`Reassigned ${person.name} (ID: ${person.id}): ${currentLocation.name} -> ${targetLocation.name}. Shift: ${newShift}. Reason: ${reason || 'None specified'}`); calculateAggregates(prisonData); showNotification(`${person.name} reassigned to ${targetLocation.name}.`, 'success'); if (currentNode) { renderTreemap(currentNode); } if (selectedNodeData) { const selectedPath = getNodePath(prisonData, selectedNodeData.id); const isRelevant = selectedPath.some(node => node.id === currentLocation.id || node.id === targetLocation.id) || selectedNodeData.id === currentLocation.id || selectedNodeData.id === targetLocation.id; if (isRelevant) { const refreshedSelectedData = findNodeById(prisonData, selectedNodeData.id); if (refreshedSelectedData) { selectedNodeData = refreshedSelectedData; updateDetailsPanel(selectedNodeData); } } } }
 
-        // --- Management Panel (SAME AS PROVIDED IN YOUR "OG CODE" PROMPT) ---
+        // --- Management Panel (UNCHANGED from Original) ---
         function showManagementPanel() { d3.select("#management-panel-backdrop").remove(); const backdrop = d3.select("body").append("div").attr("id", "management-panel-backdrop"); const panel = backdrop.append("div").attr("id", "management-panel"); panel.append("div").attr("class", "panel-header").html(`<h3>Management Tools</h3><button id="close-management-panel">×</button>`); panel.append("div").attr("class", "panel-tabs").html(`<div id="tab-inmates" class="panel-tab panel-tab-active">Inmates</div><div id="tab-personnel" class="panel-tab">Personnel</div><div id="tab-capacity" class="panel-tab">Capacity (Placeholder)</div>`); const panelBody = panel.append("div").attr("class", "panel-body"); renderInmatesTab(panelBody); panel.selectAll(".panel-tab").on("click", function () { panel.selectAll(".panel-tab").classed("panel-tab-active", false); const clickedTab = d3.select(this); clickedTab.classed("panel-tab-active", true); const tabId = clickedTab.attr("id"); if (tabId === "tab-inmates") { renderInmatesTab(panelBody); } else if (tabId === "tab-personnel") { renderPersonnelTab(panelBody); } else if (tabId === "tab-capacity") { renderCapacityTab(panelBody); } }); panel.select("#close-management-panel").on("click", () => backdrop.remove()); backdrop.on("click", function (event) { if (event.target === this) { backdrop.remove(); } }); }
         function renderInmatesTab(container) { container.html(""); container.append("h4").text("Inmate Management"); const filterArea = container.append("div").attr("class", "panel-search-filter"); filterArea.append("input").attr("type", "text").attr("id", "mgmt-inmate-search").attr("placeholder", "Search by name or ID...").style("min-width", "200px"); filterArea.append("select").attr("id", "mgmt-inmate-status-filter").html(`<option value="">All Status</option>`); filterArea.append("select").attr("id", "mgmt-inmate-sec-filter").html(`<option value="">All Security</option>`); const statusFilter = filterArea.select("#mgmt-inmate-status-filter"); const secFilter = filterArea.select("#mgmt-inmate-sec-filter"); getUniqueValues(prisonData, 'status').forEach(s => statusFilter.append('option').attr('value', s).text(getStatusText(s))); getUniqueValues(prisonData, 'securityLevel').forEach(l => secFilter.append('option').attr('value', l).text(l || 'N/A')); const table = container.append("table"); table.append("thead").append("tr").html("<th>ID</th><th>Name</th><th>Status</th><th>Security</th><th>Location</th><th>Actions</th>"); table.append("tbody").attr("id", "mgmt-inmate-table-body"); displayManagementInmates(); filterArea.selectAll("input, select").on("input change", displayManagementInmates); }
         function displayManagementInmates() { const searchTerm = d3.select("#mgmt-inmate-search").property("value").toLowerCase(); const statusFilter = d3.select("#mgmt-inmate-status-filter").property("value"); const secFilter = d3.select("#mgmt-inmate-sec-filter").property("value"); const tbody = d3.select("#mgmt-inmate-table-body"); tbody.html(""); const allInmates = []; function collectInmates(node) { if (node?.inmates) { node.inmates.forEach(inmate => { allInmates.push({ ...inmate, locationName: inmate.location || node.name, locationId: inmate.locationId || node.id }); }); } if (node?.children) { node.children.forEach(collectInmates); } } collectInmates(prisonData); const filteredInmates = allInmates.filter(inmate => (!statusFilter || inmate.status === statusFilter) && (!secFilter || inmate.securityLevel === secFilter) && (!searchTerm || inmate.name.toLowerCase().includes(searchTerm) || inmate.id.toLowerCase().includes(searchTerm) || (inmate.locationName && inmate.locationName.toLowerCase().includes(searchTerm)))); filteredInmates.sort((a, b) => a.name.localeCompare(b.name)); if (filteredInmates.length === 0) { tbody.append("tr").html(`<td colspan="6" style="text-align:center; color: var(--text-muted); padding: 20px;">No inmates match the current filters.</td>`); } else { filteredInmates.forEach(inmate => { const locationNode = findNodeById(prisonData, inmate.locationId); const canRelocate = locationNode && (locationNode.type === 'cell' || locationNode.type === 'dormitory'); tbody.append("tr").html(`<td>${inmate.id}</td><td>${inmate.name}</td><td><span class="alert ${getStatusClass(inmate.status)}">${getStatusText(inmate.status)}</span></td><td>${inmate.securityLevel || 'N/A'}</td><td>${inmate.locationName || 'Unknown'}</td><td> ${canRelocate ? `<button class="relocate-inmate-mgmt" data-inmate-id="${inmate.id}" data-location-id="${inmate.locationId}" title="Relocate ${inmate.name}">Relocate</button>` : `<span style="font-size:0.8em; color: var(--text-muted);">(N/A)</span>`} </td>`); }); } tbody.selectAll('.relocate-inmate-mgmt').on('click', function () { const inmateId = d3.select(this).attr('data-inmate-id'); const locationId = d3.select(this).attr('data-location-id'); const locationNode = findNodeById(prisonData, locationId); const inmateData = locationNode?.inmates.find(i => i.id === inmateId); if (inmateData && locationNode) { showReallocationModal(inmateData, locationNode); } else { showNotification("Could not find inmate or location data for reallocation.", "error"); console.error("Mgmt Panel Realloc Error:", { inmateId, locationId, locationNode }); } }); }
@@ -2074,8 +1016,7 @@
         function displayManagementPersonnel() { const searchTerm = d3.select("#mgmt-personnel-search").property("value").toLowerCase(); const roleFilter = d3.select("#mgmt-personnel-role-filter").property("value"); const shiftFilter = d3.select("#mgmt-personnel-shift-filter").property("value"); const tbody = d3.select("#mgmt-personnel-table-body"); tbody.html(""); const allPersonnel = []; function collectPersonnel(node) { if (node?.assignedPersonnel) { node.assignedPersonnel.forEach(p => { allPersonnel.push({ ...p, locationName: p.location || node.name, locationId: p.locationId || node.id }); }); } if (node?.children) node.children.forEach(collectPersonnel); } collectPersonnel(prisonData); const filteredPersonnel = allPersonnel.filter(p => (!roleFilter || p.role === roleFilter) && (!shiftFilter || p.shift === shiftFilter) && (!searchTerm || p.name.toLowerCase().includes(searchTerm) || p.id.toLowerCase().includes(searchTerm) || p.role?.toLowerCase().includes(searchTerm) || (p.locationName && p.locationName.toLowerCase().includes(searchTerm)))); filteredPersonnel.sort((a, b) => a.name.localeCompare(b.name)); if (filteredPersonnel.length === 0) { tbody.append("tr").html(`<td colspan="6" style="text-align:center; color: var(--text-muted); padding: 20px;">No personnel match the current filters.</td>`); } else { filteredPersonnel.forEach(p => { const locationNode = findNodeById(prisonData, p.locationId); const canReassign = locationNode && ['cell', 'dormitory', 'block', 'sector'].includes(locationNode.type); tbody.append("tr").html(`<td>${p.id}</td><td>${p.name}</td><td>${p.role || 'N/A'}</td><td>${p.shift || 'N/A'}</td><td>${p.locationName || 'Unknown'}</td><td> ${canReassign ? `<button class="reassign-personnel-mgmt" data-personnel-id="${p.id}" data-location-id="${p.locationId}" title="Reassign ${p.name}">Reassign</button>` : `<span style="font-size:0.8em; color: var(--text-muted);">(N/A)</span>`} </td>`); }); } tbody.selectAll('.reassign-personnel-mgmt').on('click', function () { const personnelId = d3.select(this).attr('data-personnel-id'); const locationId = d3.select(this).attr('data-location-id'); const locationNode = findNodeById(prisonData, locationId); const personData = locationNode?.assignedPersonnel.find(p => p.id === personnelId); if (personData && locationNode) { showPersonnelReassignmentModal(personData, locationNode); } else { showNotification("Could not find personnel or location data for reassignment.", "error"); console.error("Mgmt Panel Reassign Error:", { personnelId, locationId, locationNode }); } }); }
         function renderCapacityTab(container) { container.html(""); container.append("h4").text("Capacity Analysis (Placeholder)"); container.append("p").style("color", "var(--text-muted)").html("This section could display charts and summaries comparing occupancy vs. capacity across different sectors or block types.<br>For example:"); container.append("ul").style("margin-left", "20px").style("color", "var(--text-muted)").html(`<li>Overall Facility Occupancy Rate Trend</li><li>Occupancy Rate per Sector (Bar Chart)</li><li>List of Overcapacity/Near Capacity Units</li>`); container.append("div").attr("id", "capacity-chart-placeholder").style("min-height", "200px").style("text-align", "center").style("padding-top", "50px").style("color", "#ccc").text("[ Chart Area ]"); }
 
-
-        // --- Event Listeners & Init (SAME AS PROVIDED IN YOUR "OG CODE" PROMPT) ---
+        // --- Event Listeners & Init (UNCHANGED from Original) ---
         document.addEventListener('DOMContentLoaded', () => {
             console.log("DOM Loaded. Initializing Dashboard...");
             if (searchInput) searchInput.addEventListener('input', applySearchFilter);
@@ -2084,19 +1025,16 @@
             if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', () => { if (filterStatusSelect) filterStatusSelect.value = ''; if (filterSecuritySelect) filterSecuritySelect.value = ''; if (searchInput) searchInput.value = ''; activeFilters = { status: '', security: '' }; applySearchFilter(); updateDetailsPanel(selectedNodeData || currentNode); });
             sizingRadios.forEach(radio => { radio.addEventListener('change', (event) => { if (event.target.checked) { currentSizing = event.target.value; if (currentNode) renderTreemap(currentNode); } }); });
             const exportCsvBtn = document.getElementById('export-csv'); if (exportCsvBtn) exportCsvBtn.addEventListener('click', exportDataToCsv);
-            const actionsDiv = document.querySelector('.actions'); if (actionsDiv && !document.getElementById('management-btn')) { const mBtn = document.createElement('button'); mBtn.id = 'management-btn'; mBtn.textContent = 'Manage'; mBtn.title = 'Open management panel'; mBtn.style.marginRight = '8px'; mBtn.addEventListener('click', showManagementPanel); actionsDiv.prepend(mBtn); }
+            const actionsDiv = document.querySelector('.actions'); if (actionsDiv && !document.getElementById('management-btn')) { const mBtn = document.createElement('button'); mBtn.id = 'management-btn'; mBtn.textContent = 'Manage'; mBtn.title = 'Open management panel'; /* mBtn.style.marginRight = '8px'; // Use gap now */ mBtn.addEventListener('click', showManagementPanel); actionsDiv.prepend(mBtn); }
             let resizeTimer; window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (currentNode) renderTreemap(currentNode); }, 250); });
             calculateAggregates(prisonData);
             currentNode = prisonData;
             selectedNodeData = prisonData; // Select root initially to populate details panel
             populateFilters();
             renderTreemap(prisonData); // Initial render will also call updateDetailsPanel
-
             console.log("Initialization complete.");
         });
-
     </script>
 
 </body>
-
 </html>
